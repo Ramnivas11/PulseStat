@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String?
+  password    String
+  createdAt   DateTime @default(now())
+
+  websites    Website[]
+  subscriptions Subscription[]
+}
+
+model Website {
+  id          String   @id @default(cuid())
+  name        String
+  domain      String
+  siteKey     String   @unique
+  createdAt   DateTime @default(now())
+
+  userId      String
+  user        User @relation(fields: [userId], references: [id])
+
+  events      Event[]
+  dailyStats  DailyStat[]
+  pageStats   PageStat[]
+}
+
+model Event {
+  id          String   @id @default(cuid())
+
+  visitorId   String
+  sessionId   String
+
+  eventType   String
+
+  path        String
+  referrer    String?
+
+  country     String?
+  browser     String?
+  device      String?
+  language    String?
+  timezone    String?
+  screenWidth Int?
+  screenHeight Int?
+
+  createdAt   DateTime @default(now())
+
+  websiteId   String
+  website     Website @relation(fields: [websiteId], references: [id])
+
+  @@index([websiteId])
+  @@index([createdAt])
+  @@index([visitorId])
+}
+
+model DailyStat {
+  id          String   @id @default(cuid())
+
+  date        DateTime
+
+  pageviews   Int      @default(0)
+  visitors    Int      @default(0)
+  sessions    Int      @default(0)
+
+  websiteId   String
+  website     Website @relation(fields: [websiteId], references: [id])
+
+  @@index([websiteId])
+  @@index([date])
+  @@unique([websiteId, date])
+}
+
+
+model PageStat {
+  id          String   @id @default(cuid())
+
+  path        String
+  views       Int      @default(0)
+
+  websiteId   String
+  website     Website @relation(fields: [websiteId], references: [id])
+
+  @@index([websiteId])
+  @@index([path])
+  @@unique([websiteId, path])
+}
+
+
+model Subscription {
+  id          String   @id @default(cuid())
+
+  plan        String
+  status      String
+
+  createdAt   DateTime @default(now())
+
+  userId      String
+  user        User @relation(fields: [userId], references: [id])
+}
