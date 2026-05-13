@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+﻿import { redirect } from "next/navigation";
 
 import { auth } from "@/lib/auth";
 import { getCurrentSubscription } from "@/features/billing/services/billing.service";
@@ -7,6 +7,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UpgradeButton } from "@/features/billing/components/upgrade-button";
 import { UsageOverview } from "@/features/billing/components/usage-overview";
+import { ComingSoonSection } from "@/features/billing/components/coming-soon-section";
 
 export default async function BillingPage() {
   const session = await auth();
@@ -34,6 +35,8 @@ export default async function BillingPage() {
         description="Choose a plan, upgrade your account, and manage your payments."
       />
 
+      <ComingSoonSection />
+
       <div className="grid gap-6 xl:grid-cols-[2fr_1fr]">
         <div className="space-y-6">
           <UsageOverview />
@@ -58,7 +61,7 @@ export default async function BillingPage() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-4xl font-bold">
-                      ₹{plan.price}
+                      ${plan.price}
                       <span className="ml-2 text-sm text-muted-foreground">
                         /{plan.interval.toLowerCase()}
                       </span>

@@ -1,10 +1,10 @@
-import Script from "next/script";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/shared/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "@/components/shared/providers";
+import { Footer } from "@/components/layout/footer";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -71,11 +71,6 @@ export default function RootLayout({
       className={`${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Script
-          id="razorpay-checkout"
-          src="https://checkout.razorpay.com/v1/checkout.js"
-          strategy="afterInteractive"
-        />
         {process.env.NEXT_PUBLIC_PULSESTAT_SITE_ID && (
           <script
             async
@@ -86,7 +81,10 @@ export default function RootLayout({
         <Providers>
           <ThemeProvider>
             <Toaster />
-            {children}
+            <div className="flex-1">
+              {children}
+            </div>
+            <Footer />
           </ThemeProvider>
         </Providers>
       </body>

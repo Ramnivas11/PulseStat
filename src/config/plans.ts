@@ -3,7 +3,7 @@ export type PlanKey = "free" | "pro";
 export interface Plan {
   name: string;
   price: number;
-  currency: "INR";
+  currency: "USD";
   description: string;
   eventLimit: number;
   websiteLimit: number;
@@ -15,7 +15,7 @@ export const PLANS: Record<PlanKey, Plan> = {
   free: {
     name: "Free",
     price: 0,
-    currency: "INR",
+    currency: "USD",
     description: "Start with basic analytics for one website.",
     eventLimit: 10000,
     websiteLimit: 1,
@@ -30,8 +30,8 @@ export const PLANS: Record<PlanKey, Plan> = {
 
   pro: {
     name: "Pro",
-    price: 99,
-    currency: "INR",
+    price: 9,
+    currency: "USD",
     description: "Advanced analytics for growing businesses.",
     eventLimit: 1000000,
     websiteLimit: 100,
