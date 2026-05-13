@@ -189,6 +189,10 @@ async function handleTransactionCompleted(payload: Record<string, unknown>) {
 
   const currentPeriodEnd = new Date();
   currentPeriodEnd.setDate(currentPeriodEnd.getDate() + 30);
+  const paddleSubscriptionId =
+    typeof data?.subscription_id === "string"
+      ? data.subscription_id
+      : undefined;
 
   return prisma.subscription.upsert({
     where: { userId },
@@ -197,33 +201,34 @@ async function handleTransactionCompleted(payload: Record<string, unknown>) {
       plan: planKey,
       status: "active",
       currentPeriodEnd,
-      paddleSubscriptionId: data?.subscription_id,
+      paddleSubscriptionId,
     },
     update: {
       plan: planKey,
       status: "active",
       currentPeriodEnd,
-      paddleSubscriptionId: data?.subscription_id,
+      paddleSubscriptionId,
     },
   });
 }
 
 async function handleSubscriptionCreated(payload: Record<string, unknown>) {
   const data = isRecord(payload.data) ? payload.data : undefined;
-  const customerId = data?.customer_id;
+  const customerId = typeof data?.customer_id === "string" ? data.customer_id : undefined;
+  const subscriptionId = typeof data?.id === "string" ? data.id : undefined;
 
   const subscription = await prisma.subscription.findFirst({
     where: { paddleCustomerId: customerId },
   });
 
-  if (!subscription) {
+  if (!subscription || !subscriptionId) {
     return null;
   }
 
   return prisma.subscription.update({
     where: { id: subscription.id },
     data: {
-      paddleSubscriptionId: data.id,
+      paddleSubscriptionId: subscriptionId,
       status: "active",
     },
   });
@@ -231,7 +236,9 @@ async function handleSubscriptionCreated(payload: Record<string, unknown>) {
 
 async function handleSubscriptionUpdated(payload: Record<string, unknown>) {
   const data = isRecord(payload.data) ? payload.data : undefined;
-  const subscriptionId = data?.id;
+  const subscriptionId = typeof data?.id === "string" ? data.id : undefined;
+  const status = typeof data?.status === "string" && data.status === "active" ? "active" : "cancelled";
+  const currentPeriodEnd = typeof data?.current_period_end === "string" ? new Date(data.current_period_end) : undefined;
 
   const subscription = await prisma.subscription.findFirst({
     where: { paddleSubscriptionId: subscriptionId },
@@ -241,20 +248,18 @@ async function handleSubscriptionUpdated(payload: Record<string, unknown>) {
     return null;
   }
 
-  const status = data.status === "active" ? "active" : "cancelled";
-
   return prisma.subscription.update({
     where: { id: subscription.id },
     data: {
       status,
-      currentPeriodEnd: data.current_period_end ? new Date(data.current_period_end) : undefined,
+      currentPeriodEnd,
     },
   });
 }
 
 async function handleSubscriptionCanceled(payload: Record<string, unknown>) {
   const data = isRecord(payload.data) ? payload.data : undefined;
-  const subscriptionId = data?.id;
+  const subscriptionId = typeof data?.id === "string" ? data.id : undefined;
 
   const subscription = await prisma.subscription.findFirst({
     where: { paddleSubscriptionId: subscriptionId },
