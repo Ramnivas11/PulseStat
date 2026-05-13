@@ -73,7 +73,8 @@ class PulseStatTracker {
   private sendTrackingData(payload: TrackingPayload): void {
     try {
       const endpoint = new URL("/api/track", window.location.origin).toString();
-      navigator.sendBeacon(endpoint, JSON.stringify(payload));
+      const blob = new Blob([JSON.stringify(payload)], { type: "text/plain" });
+      navigator.sendBeacon(endpoint, blob);
     } catch (error) {
       console.warn("PulseStat: Failed to send tracking data", error);
     }

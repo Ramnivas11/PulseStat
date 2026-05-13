@@ -1,4 +1,4 @@
-import { getWebsites } from "@/services/website.service";
+import { getWebsites } from "@/features/websites/services/website.service";
 
 export async function GET() {
   const websites = await getWebsites();

@@ -52,11 +52,13 @@ model Event {
   screenHeight Int?
 
   createdAt   DateTime @default(now())
+  lastActiveAt DateTime?
 
   websiteId   String
   website     Website @relation(fields: [websiteId], references: [id])
 
   @@index([websiteId])
+  @@index([websiteId, lastActiveAt])
   @@index([createdAt])
   @@index([visitorId])
 }
@@ -100,8 +102,14 @@ model Subscription {
   plan        String
   status      String
 
+  razorpayOrderId String?
+  razorpayPaymentId String?
+
+  currentPeriodEnd DateTime?
+
   createdAt   DateTime @default(now())
 
-  userId      String
+  userId      String   @unique
+
   user        User @relation(fields: [userId], references: [id])
 }

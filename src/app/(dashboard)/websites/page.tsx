@@ -6,9 +6,12 @@ import { PageHeader } from "@/components/shared/page-header";
 
 import { EmptyState } from "@/components/shared/empty-state";
 
-import { WebsiteCard } from "@/components/dashboard/website-card";
+import { WebsiteCard } from "@/features/websites/components/website-card";
 
-import { CreateWebsiteForm } from "@/components/dashboard/create-website-form";
+import { CreateWebsiteForm } from "@/features/websites/components/create-website-form";
+
+import { canCreateWebsite } from "@/features/billing/services/billing.service";
+import { UpgradePrompt } from "@/features/billing/components/upgrade-prompt";
 
 export default async function WebsitesPage() {
   const session = await auth();
@@ -23,6 +26,10 @@ export default async function WebsitesPage() {
     },
   });
 
+  if (!user) return null;
+
+  const permission = await canCreateWebsite(user.id);
+
   return (
     <div className="space-y-8">
       <PageHeader
@@ -30,7 +37,14 @@ export default async function WebsitesPage() {
         description="Manage your tracked websites."
       />
 
-      <CreateWebsiteForm />
+      {permission.allowed ? (
+        <CreateWebsiteForm />
+      ) : (
+        <UpgradePrompt 
+          title="Website Limit Reached" 
+          description={`You are using ${permission.currentCount}/${permission.limit} websites on the ${permission.plan} plan. Upgrade to Pro for unlimited websites.`} 
+        />
+      )}
 
       {user?.websites.length === 0 ? (
         <EmptyState

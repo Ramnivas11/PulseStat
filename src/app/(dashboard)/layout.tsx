@@ -8,9 +8,11 @@ export default function DashboardLayout({
 }) {
   return (
     <div className="flex min-h-screen">
-      <Sidebar />
+      <div className="hidden md:block w-72 shrink-0">
+        <Sidebar />
+      </div>
 
-      <div className="flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col overflow-hidden">
         <Navbar />
 
         <main className="flex-1 p-6">
