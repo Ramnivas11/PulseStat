@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { AlertCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { logError } from "@/lib/logger";
 
 export default function Error({
   error,
@@ -12,8 +13,8 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Optionally log to error reporting service
-    console.error(error);
+    // Log to error reporting service (logger strips sensitive info in production)
+    logError(error);
   }, [error]);
 
   return (
