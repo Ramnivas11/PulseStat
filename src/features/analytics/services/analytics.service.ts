@@ -28,6 +28,10 @@ export interface DailyStatPoint {
   sessions: number;
 }
 
+function formatDateKey(d: Date): string {
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
+}
+
 export interface TrackEventPayload {
   visitorId: string;
   sessionId: string;
@@ -169,14 +173,15 @@ export async function getDailyStats(
     select: { date: true, pageviews: true, visitors: true, sessions: true },
   });
 
-  const statsMap = new Map(
-    stats.map((s) => [s.date.toISOString().slice(0, 10), s])
-  );
+  const statsMap = new Map<string, (typeof stats)[number]>();
+  for (const s of stats) {
+    statsMap.set(formatDateKey(s.date), s);
+  }
 
   // If no date range provided, just return existing stats
   if (!startDate || !endDate) {
     return stats.map((row) => ({
-      date: row.date.toISOString().slice(0, 10),
+      date: formatDateKey(row.date),
       pageviews: row.pageviews,
       visitors: row.visitors,
       sessions: row.sessions,
@@ -186,32 +191,25 @@ export async function getDailyStats(
   // Fill in gaps
   const results: DailyStatPoint[] = [];
   const current = new Date(startDate);
-  current.setHours(0, 0, 0, 0);
+  current.setUTCHours(0, 0, 0, 0);
 
   const end = new Date(endDate);
-  end.setHours(0, 0, 0, 0);
+  end.setUTCHours(0, 0, 0, 0);
 
-  while (current <= end) {
-    const dateStr = current.toISOString().slice(0, 10);
+  const endTime = end.getTime();
+
+  while (current.getTime() <= endTime) {
+    const dateStr = formatDateKey(current);
     const existing = statsMap.get(dateStr);
 
-    if (existing) {
-      results.push({
-        date: dateStr,
-        pageviews: existing.pageviews,
-        visitors: existing.visitors,
-        sessions: existing.sessions,
-      });
-    } else {
-      results.push({
-        date: dateStr,
-        pageviews: 0,
-        visitors: 0,
-        sessions: 0,
-      });
-    }
+    results.push({
+      date: dateStr,
+      pageviews: existing?.pageviews ?? 0,
+      visitors: existing?.visitors ?? 0,
+      sessions: existing?.sessions ?? 0,
+    });
 
-    current.setDate(current.getDate() + 1);
+    current.setUTCDate(current.getUTCDate() + 1);
   }
 
   return results;
