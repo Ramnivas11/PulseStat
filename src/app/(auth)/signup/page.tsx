@@ -11,7 +11,6 @@ import {
   User,
   Eye, 
   EyeOff, 
-  ArrowRight,
   AlertCircle,
   Sparkles
 } from "lucide-react";
@@ -60,7 +59,7 @@ export default function SignupPage() {
         toast.success("Account created successfully!");
         router.push("/login");
       }
-    } catch (err) {
+    } catch {
       setError("An unexpected error occurred");
       toast.error("Something went wrong. Please try again.");
     } finally {

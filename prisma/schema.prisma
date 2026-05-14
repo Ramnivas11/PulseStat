@@ -15,6 +15,8 @@ model User {
 
   websites    Website[]
   subscriptions Subscription[]
+
+  @@index([createdAt])
 }
 
 model Website {
@@ -30,6 +32,10 @@ model Website {
   events      Event[]
   dailyStats  DailyStat[]
   pageStats   PageStat[]
+
+  @@index([userId])
+  @@index([domain])
+  @@index([createdAt])
 }
 
 model Event {
@@ -58,7 +64,13 @@ model Event {
   website     Website @relation(fields: [websiteId], references: [id])
 
   @@index([websiteId])
+  @@index([websiteId, createdAt])
+  @@index([websiteId, createdAt, visitorId])
+  @@index([websiteId, createdAt, sessionId])
   @@index([websiteId, lastActiveAt])
+  @@index([websiteId, path, createdAt])
+  @@index([websiteId, browser, createdAt])
+  @@index([websiteId, device, createdAt])
   @@index([createdAt])
   @@index([visitorId])
 }
