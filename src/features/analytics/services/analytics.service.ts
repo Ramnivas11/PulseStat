@@ -224,7 +224,10 @@ export async function getActiveVisitors(websiteId: string) {
     by: ["sessionId"],
     where: {
       websiteId,
-      createdAt: { gte: fiveMinutesAgo },
+      OR: [
+        { lastActiveAt: { gte: fiveMinutesAgo } },
+        { lastActiveAt: null, createdAt: { gte: fiveMinutesAgo } },
+      ],
     },
   });
 

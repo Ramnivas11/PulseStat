@@ -11,7 +11,6 @@ import {
   User,
   Eye, 
   EyeOff, 
-  ArrowRight,
   AlertCircle,
   Sparkles
 } from "lucide-react";
@@ -54,13 +53,13 @@ export default function SignupPage() {
 
       if (!res.ok) {
         const errorData = await res.json();
-        setError(errorData.message || "Failed to create account");
+        setError(errorData.error || "Failed to create account");
         toast.error("Signup failed. Please try again.");
       } else {
         toast.success("Account created successfully!");
         router.push("/login");
       }
-    } catch (err) {
+    } catch {
       setError("An unexpected error occurred");
       toast.error("Something went wrong. Please try again.");
     } finally {

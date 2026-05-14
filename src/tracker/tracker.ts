@@ -1,8 +1,8 @@
 // PulseStat Analytics SDK
-// Lightweight, production-ready SPA tracking
+// Lightweight, production-ready SPA tracking with sendBeacon fallback.
 
 interface TrackingPayload {
-  siteId: string | null;
+  siteId: string;
   visitorId: string;
   sessionId: string;
   path: string;
@@ -18,11 +18,12 @@ interface TrackingPayload {
 
 class PulseStatTracker {
   private siteId: string | null = null;
-  private visitorId!: string;
-  private sessionId!: string;
-  private lastTrackedPath: string = "";
+  private visitorId = "";
+  private sessionId = "";
+  private lastTrackedPath = "";
   private isInitialized = false;
-  private baseUrl: string = "";
+  private baseUrl = "";
+  private lastEventAt = 0;
 
   constructor() {
     this.initialize();
@@ -31,56 +32,69 @@ class PulseStatTracker {
   }
 
   private generateId(): string {
-    if (typeof crypto !== "undefined" && crypto.randomUUID) {
-      return crypto.randomUUID();
-    }
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
-      const r = (Math.random() * 16) | 0;
-      const v = c === "x" ? r : (r & 0x3) | 0x8;
-      return v.toString(16);
+    if (typeof crypto !== "undefined" && crypto.randomUUID) return crypto.randomUUID();
+
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (character) => {
+      const random = (Math.random() * 16) | 0;
+      const value = character === "x" ? random : (random & 0x3) | 0x8;
+      return value.toString(16);
     });
   }
 
+  private safeStorage(storage: Storage, key: string): string | null {
+    try {
+      return storage.getItem(key);
+    } catch {
+      return null;
+    }
+  }
+
+  private setSafeStorage(storage: Storage, key: string, value: string): void {
+    try {
+      storage.setItem(key, value);
+    } catch {
+      // Storage can be unavailable in private browsing or sandboxed embeds.
+    }
+  }
+
   private initialize(): void {
-    // 1. Find the script tag and its origin
-    const currentScript = (document.currentScript as HTMLScriptElement) || 
-      Array.from(document.getElementsByTagName("script")).find(s => s.src.includes("tracker.js"));
-    
+    const currentScript =
+      (document.currentScript as HTMLScriptElement | null) ??
+      Array.from(document.getElementsByTagName("script")).find((script) => script.src.includes("tracker.js"));
+
     if (currentScript) {
       this.siteId = currentScript.getAttribute("data-site-id");
       try {
-        const url = new URL(currentScript.src);
-        this.baseUrl = url.origin;
+        this.baseUrl = new URL(currentScript.src).origin;
       } catch {
-        this.baseUrl = "";
+        this.baseUrl = window.location.origin;
       }
     }
 
-    // 2. Initialize IDs with fallback
-    let visitorId = localStorage.getItem("_ps_vid");
-    if (!visitorId) {
-      visitorId = this.generateId();
-      localStorage.setItem("_ps_vid", visitorId);
-    }
+    const visitorId = this.safeStorage(localStorage, "_ps_vid") ?? this.generateId();
+    this.setSafeStorage(localStorage, "_ps_vid", visitorId);
     this.visitorId = visitorId;
 
-    let sessionId = sessionStorage.getItem("_ps_sid");
-    if (!sessionId) {
-      sessionId = this.generateId();
-      sessionStorage.setItem("_ps_sid", sessionId);
-    }
+    const sessionId = this.safeStorage(sessionStorage, "_ps_sid") ?? this.generateId();
+    this.setSafeStorage(sessionStorage, "_ps_sid", sessionId);
     this.sessionId = sessionId;
   }
 
-  private createPayload(path?: string): TrackingPayload {
-    const normalizedPath = (path || window.location.pathname).replace(/\/+$/, "") || "/";
+  private normalizePath(path?: string): string {
+    const parsedPath = (path || window.location.pathname).split("#")[0]?.slice(0, 2000) || "/";
+    return parsedPath.replace(/\/+$/, "") || "/";
+  }
+
+  private createPayload(path?: string): TrackingPayload | null {
+    if (!this.siteId) return null;
+
     return {
       siteId: this.siteId,
       visitorId: this.visitorId,
       sessionId: this.sessionId,
-      path: normalizedPath,
-      referrer: document.referrer,
-      userAgent: navigator.userAgent,
+      path: this.normalizePath(path),
+      referrer: document.referrer.slice(0, 2000),
+      userAgent: navigator.userAgent.slice(0, 512),
       language: navigator.language,
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
       screenWidth: window.screen.width,
@@ -90,33 +104,40 @@ class PulseStatTracker {
     };
   }
 
-  private async sendTrackingData(payload: TrackingPayload): Promise<void> {
+  private sendTrackingData(payload: TrackingPayload): void {
     if (!this.siteId || !this.baseUrl) return;
-    
-    try {
-      const endpoint = `${this.baseUrl}/api/track`;
-      
-      // Use fetch with keepalive: true (modern alternative to sendBeacon)
-      // This allows us to see the request in the Network tab more easily
-      await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-        keepalive: true,
-        mode: "cors",
-      });
-    } catch (e) {
-      // Silent fail
+
+    const endpoint = `${this.baseUrl}/api/track`;
+    const body = JSON.stringify(payload);
+
+    if (navigator.sendBeacon) {
+      const sent = navigator.sendBeacon(endpoint, new Blob([body], { type: "application/json" }));
+      if (sent) return;
     }
+
+    void fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body,
+      keepalive: true,
+      mode: "cors",
+      credentials: "omit",
+    }).catch(() => {
+      // Analytics must never affect the host application.
+    });
   }
 
   public trackPageView(path?: string): void {
-    const currentPath = (path || window.location.pathname).replace(/\/+$/, "") || "/";
-    if (currentPath === this.lastTrackedPath) return;
+    const now = Date.now();
+    const currentPath = this.normalizePath(path);
+    if (currentPath === this.lastTrackedPath || now - this.lastEventAt < 400) return;
+
+    const payload = this.createPayload(currentPath);
+    if (!payload) return;
+
     this.lastTrackedPath = currentPath;
-    this.sendTrackingData(this.createPayload(currentPath));
+    this.lastEventAt = now;
+    this.sendTrackingData(payload);
   }
 
   private setupSPATracking(): void {
@@ -126,20 +147,19 @@ class PulseStatTracker {
     const originalPushState = history.pushState.bind(history);
     history.pushState = (...args) => {
       originalPushState(...args);
-      setTimeout(() => this.trackPageView(), 0);
+      window.setTimeout(() => this.trackPageView(), 0);
     };
 
     const originalReplaceState = history.replaceState.bind(history);
     history.replaceState = (...args) => {
       originalReplaceState(...args);
-      setTimeout(() => this.trackPageView(), 0);
+      window.setTimeout(() => this.trackPageView(), 0);
     };
 
-    window.addEventListener("popstate", () => this.trackPageView());
+    window.addEventListener("popstate", () => this.trackPageView(), { passive: true });
   }
 }
 
-// Initialized immediately
 if (typeof window !== "undefined") {
-  new PulseStatTracker();
+  window.setTimeout(() => new PulseStatTracker(), 0);
 }
