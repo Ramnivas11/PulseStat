@@ -24,7 +24,7 @@ export async function PATCH(req: Request) {
 
     const validated = updateUserSchema.safeParse(body);
     if (!validated.success) {
-      return errorResponse(validated.error.errors[0]?.message ?? "Invalid data", 400);
+      return errorResponse(validated.error.issues[0]?.message ?? "Invalid data", 400);
     }
 
     const updatedUser = await prisma.user.update({
