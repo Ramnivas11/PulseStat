@@ -54,8 +54,6 @@ function requestMatchesWebsite(req: Request, websiteDomain: string) {
     .map((value) => normalizeHostname(value));
 
   if (candidates.length === 0) return process.env.NODE_ENV !== "production";
-  return candidates.some((hostname) => hostname === expected || hostname.endsWith(`.${expected}`));
-}
 
 async function wasRecentlyTracked(validated: z.infer<typeof trackEventSchema>) {
   const key = `track:dedupe:${validated.siteId}:${validated.sessionId}:${validated.path}:${Math.floor(Date.now() / (DEDUPE_TTL_SECONDS * 1000))}`;
