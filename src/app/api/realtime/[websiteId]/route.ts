@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import { logError, logWarn } from "@/lib/logger";
+import { logWarn } from "@/lib/logger";
 import { successResponse, errorResponse, apiErrorHandler } from "@/lib/api-helpers";
 import { getActiveVisitors } from "@/features/analytics/services/analytics.service";
 import { getWebsiteByIdForUser } from "@/features/websites/services/website.service";

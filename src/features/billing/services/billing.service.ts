@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/prisma";
 import { PLANS, type PlanKey } from "@/config/plans";
-import crypto from "crypto";
 
 export type BillingPlan = "free" | "pro";
 export type SubscriptionStatus = "pending" | "active" | "cancelled";
@@ -83,7 +82,7 @@ export async function getMonthlyEventUsage(
   userId: string
 ): Promise<number> {
   const now = new Date();
-  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const monthStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
 
   const result = await prisma.dailyStat.aggregate({
     where: {

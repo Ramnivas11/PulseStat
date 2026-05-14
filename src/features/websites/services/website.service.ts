@@ -52,10 +52,23 @@ export async function deleteWebsite(
   websiteId: string,
   userId: string
 ) {
-  return prisma.website.deleteMany({
-    where: {
-      id: websiteId,
-      userId,
-    },
+  return prisma.$transaction(async (tx) => {
+    const website = await tx.website.findFirst({
+      where: { id: websiteId, userId },
+      select: { id: true },
+    });
+
+    if (!website) return { count: 0 };
+
+    await tx.event.deleteMany({ where: { websiteId } });
+    await tx.dailyStat.deleteMany({ where: { websiteId } });
+    await tx.pageStat.deleteMany({ where: { websiteId } });
+
+    return tx.website.deleteMany({
+      where: {
+        id: websiteId,
+        userId,
+      },
+    });
   });
 }

@@ -19,7 +19,10 @@ export async function DELETE(
       return errorResponse("Website ID is required", 400);
     }
 
-    await deleteWebsite(id, session.user.id);
+    const result = await deleteWebsite(id, session.user.id);
+    if (result.count === 0) {
+      return errorResponse("Website not found", 404);
+    }
 
     return successResponse({ deleted: true });
   } catch (error) {

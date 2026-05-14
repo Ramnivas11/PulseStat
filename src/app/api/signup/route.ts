@@ -53,7 +53,7 @@ export async function POST(req: Request) {
 
     // Never return the user object — omit password hash
     return Response.json({ success: true });
-  } catch (error) {
+  } catch {
     logWarn("Signup error", { ip });
     return Response.json(
       { error: "An unexpected error occurred during signup." },

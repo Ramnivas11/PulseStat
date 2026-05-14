@@ -45,9 +45,11 @@ function CopyButton({ text, label }: { text: string; label: string }) {
 
   return (
     <button
+      type="button"
       onClick={copy}
-      className="shrink-0 p-1.5 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg transition-all"
+      className="shrink-0 p-1.5 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       title={`Copy ${label}`}
+      aria-label={`Copy ${label}`}
     >
       {copied ? (
         <Check className="h-3.5 w-3.5 text-emerald-500" />
@@ -103,8 +105,10 @@ export function WebsiteCard({ id, name, domain, siteKey }: WebsiteCardProps) {
               <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
                   <button
-                    className="p-1.5 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg transition-all"
+                    type="button"
+                    className="p-1.5 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     title="Delete website"
+                    aria-label={`Delete ${name}`}
                   >
                     <Trash2 className="h-3.5 w-3.5" />
                   </button>
