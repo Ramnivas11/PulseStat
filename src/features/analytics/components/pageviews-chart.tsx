@@ -86,8 +86,8 @@ export function PageViewsChart({ data }: PageViewsChartProps) {
                   boxShadow: "0 10px 25px -5px rgb(0 0 0 / 0.15)",
                   fontSize: "12px",
                 }}
-                labelFormatter={(label: string) =>
-                  new Date(label + "T00:00:00").toLocaleDateString("en-US", {
+                labelFormatter={(label: any) =>
+                  new Date(String(label) + "T00:00:00").toLocaleDateString("en-US", {
                     weekday: "short",
                     month: "short",
                     day: "numeric",
