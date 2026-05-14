@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import {
   CartesianGrid,
   Legend,
@@ -10,7 +11,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp } from "lucide-react";
 import type { DailyStatPoint } from "@/features/analytics/services/analytics.service";
 
@@ -41,9 +42,10 @@ export function PageViewsChart({ data }: PageViewsChartProps) {
     <Card className="glass shadow-xl border-white/20">
       <CardHeader className="border-b bg-muted/30">
         <CardTitle className="text-lg font-semibold flex items-center gap-2">
-          <TrendingUp className="h-5 w-5 text-primary" />
-          Traffic Trend
+          <TrendingUp className="h-5 w-5 text-primary" aria-hidden="true" />
+          Traffic trend
         </CardTitle>
+        <CardDescription>Pageviews and unique visitors over time.</CardDescription>
       </CardHeader>
 
       <CardContent className="pt-6">
@@ -86,7 +88,7 @@ export function PageViewsChart({ data }: PageViewsChartProps) {
                   boxShadow: "0 10px 25px -5px rgb(0 0 0 / 0.15)",
                   fontSize: "12px",
                 }}
-                labelFormatter={(label: any) =>
+                labelFormatter={(label: ReactNode) =>
                   new Date(String(label) + "T00:00:00").toLocaleDateString("en-US", {
                     weekday: "short",
                     month: "short",

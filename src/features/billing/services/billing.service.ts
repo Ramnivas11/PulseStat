@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/prisma";
 import { PLANS, type PlanKey } from "@/config/plans";
-import crypto from "crypto";
 
 export type BillingPlan = "free" | "pro";
 export type SubscriptionStatus = "pending" | "active" | "cancelled";
