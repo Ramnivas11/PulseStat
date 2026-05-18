@@ -1,0 +1,139 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String
+  createdAt DateTime @default(now())
+
+  websites      Website[]
+  subscriptions Subscription[]
+
+  @@index([createdAt])
+}
+
+model Website {
+  id        String   @id @default(cuid())
+  name      String
+  domain    String
+  siteKey   String   @unique
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  events     Event[]
+  dailyStats DailyStat[]
+  pageStats  PageStat[]
+
+  @@index([userId])
+  @@index([domain])
+  @@index([createdAt])
+}
+
+model Event {
+  id        String  @id @default(cuid())
+  visitorId String
+  sessionId String
+  visitId   String?
+
+  eventType String
+  eventName String?
+
+  path      String
+  hostname  String?
+  urlQuery  String?
+  pageTitle String?
+
+  referrer       String?
+  referrerDomain String?
+
+  country  String?
+  browser  String?
+  os       String?
+  device   String?
+  language String?
+  timezone String?
+
+  screenWidth  Int?
+  screenHeight Int?
+
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmContent  String?
+  utmTerm     String?
+
+  createdAt    DateTime  @default(now())
+  lastActiveAt DateTime?
+
+  websiteId String
+  website   Website @relation(fields: [websiteId], references: [id])
+
+  @@index([websiteId])
+  @@index([websiteId, createdAt])
+  @@index([websiteId, createdAt, visitorId])
+  @@index([websiteId, createdAt, sessionId])
+  @@index([websiteId, lastActiveAt])
+  @@index([websiteId, path, createdAt])
+  @@index([websiteId, browser, createdAt])
+  @@index([websiteId, device, createdAt])
+  @@index([websiteId, os, createdAt])
+  @@index([websiteId, country, createdAt])
+  @@index([websiteId, referrerDomain, createdAt])
+  @@index([websiteId, utmSource, createdAt])
+  @@index([createdAt])
+  @@index([visitorId])
+}
+
+model DailyStat {
+  id        String   @id @default(cuid())
+  date      DateTime
+
+  pageviews Int @default(0)
+  visitors  Int @default(0)
+  sessions  Int @default(0)
+  bounces   Int @default(0)
+
+  websiteId String
+  website   Website @relation(fields: [websiteId], references: [id])
+
+  @@unique([websiteId, date])
+  @@index([websiteId])
+  @@index([date])
+}
+
+model PageStat {
+  id    String @id @default(cuid())
+  path  String
+  views Int    @default(0)
+
+  websiteId String
+  website   Website @relation(fields: [websiteId], references: [id])
+
+  @@unique([websiteId, path])
+  @@index([websiteId])
+}
+
+model Subscription {
+  id     String @id @default(cuid())
+  plan   String
+  status String
+
+  paddleCustomerId     String?
+  paddleSubscriptionId String?
+  paddlePriceId        String?
+
+  currentPeriodEnd DateTime?
+  createdAt        DateTime  @default(now())
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+}
