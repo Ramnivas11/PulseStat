@@ -23,7 +23,7 @@ export const trackEventSchema = z.object({
 
   country: z.string().max(50).optional(),
 
-  timestamp: z.string().max(100),
+  timestamp: z.iso.datetime(),
 
   lastActiveAt: z.iso.datetime().optional(),
 });

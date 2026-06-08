@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/prisma";
 
+export const ACTIVE_VISITOR_WINDOW_SECONDS = 30;
+
 export interface DashboardStats {
   pageviews: number;
   visitors: number;
@@ -45,6 +47,12 @@ export interface TrackEventPayload {
   websiteId: string;
 }
 
+export function getEventDay(date: Date) {
+  const day = new Date(date);
+  day.setUTCHours(0, 0, 0, 0);
+  return day;
+}
+
 export async function createRawEvent(data: TrackEventPayload) {
   return prisma.event.create({
     data,
@@ -57,26 +65,16 @@ export async function getDashboardStats(
 ): Promise<DashboardStats> {
   const dateFilter = startDate && endDate ? { gte: startDate, lte: endDate } : undefined;
 
-  const [pageviewsResult, visitorsResult, sessionsResult] =
-    await Promise.all([
-      prisma.dailyStat.aggregate({
-        where: { websiteId, ...(dateFilter ? { date: dateFilter } : {}) },
-        _sum: { pageviews: true },
-      }),
-      prisma.dailyStat.aggregate({
-        where: { websiteId, ...(dateFilter ? { date: dateFilter } : {}) },
-        _sum: { visitors: true },
-      }),
-      prisma.dailyStat.aggregate({
-        where: { websiteId, ...(dateFilter ? { date: dateFilter } : {}) },
-        _sum: { sessions: true },
-      }),
-    ]);
+  // OPTIMIZED: Single aggregate query with all three fields
+  const result = await prisma.dailyStat.aggregate({
+    where: { websiteId, ...(dateFilter ? { date: dateFilter } : {}) },
+    _sum: { pageviews: true, visitors: true, sessions: true },
+  });
 
   return {
-    pageviews: pageviewsResult._sum.pageviews ?? 0,
-    visitors: visitorsResult._sum.visitors ?? 0,
-    sessions: sessionsResult._sum.sessions ?? 0,
+    pageviews: result._sum.pageviews ?? 0,
+    visitors: result._sum.visitors ?? 0,
+    sessions: result._sum.sessions ?? 0,
   };
 }
 
@@ -177,24 +175,21 @@ export async function getDailyStats(
   }));
 }
 
-export async function getActiveVisitors(
-  websiteId: string
-) {
-  const fiveMinutesAgo = new Date(
-    Date.now() - 5 * 60 * 1000
+export async function getActiveVisitors(websiteId: string) {
+  const activeSince = new Date(
+    Date.now() - ACTIVE_VISITOR_WINDOW_SECONDS * 1000
   );
 
-  const activeSessions = await prisma.event.groupBy({
-    by: ["sessionId"],
-    where: {
-      websiteId,
-      createdAt: {
-        gte: fiveMinutesAgo,
-      },
-    },
-  });
+  // OPTIMIZED: Use COUNT(DISTINCT) via raw query instead of groupBy
+  // This is more efficient for large event tables and utilizes the index on (websiteId, lastActiveAt)
+  const result = await prisma.$queryRawUnsafe<[{ count: number }]>(
+    `SELECT COUNT(DISTINCT "visitorId") as count FROM "Event" 
+     WHERE "websiteId" = $1 AND "lastActiveAt" >= $2`,
+    websiteId,
+    activeSince
+  );
 
-  return activeSessions.length;
+  return result[0]?.count ?? 0;
 }
 
 export async function updatePageStats(websiteId: string, path: string) {
@@ -219,10 +214,28 @@ export async function updatePageStats(websiteId: string, path: string) {
 }
 
 export async function processTrackEvent(event: TrackEventPayload) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const eventDay = getEventDay(event.lastActiveAt);
 
   return prisma.$transaction(async (tx) => {
+    const [dailyVisitor, dailySession] = await Promise.all([
+      tx.dailyVisitor.createMany({
+        data: {
+          websiteId: event.websiteId,
+          date: eventDay,
+          visitorId: event.visitorId,
+        },
+        skipDuplicates: true,
+      }),
+      tx.dailySession.createMany({
+        data: {
+          websiteId: event.websiteId,
+          date: eventDay,
+          sessionId: event.sessionId,
+        },
+        skipDuplicates: true,
+      }),
+    ]);
+
     await tx.event.create({
       data: event,
     });
@@ -231,19 +244,25 @@ export async function processTrackEvent(event: TrackEventPayload) {
       where: {
         websiteId_date: {
           websiteId: event.websiteId,
-          date: today,
+          date: eventDay,
         },
       },
       create: {
         websiteId: event.websiteId,
-        date: today,
+        date: eventDay,
         pageviews: 1,
-        visitors: 1,
-        sessions: 1,
+        visitors: dailyVisitor.count,
+        sessions: dailySession.count,
       },
       update: {
         pageviews: {
           increment: 1,
+        },
+        visitors: {
+          increment: dailyVisitor.count,
+        },
+        sessions: {
+          increment: dailySession.count,
         },
       },
     });

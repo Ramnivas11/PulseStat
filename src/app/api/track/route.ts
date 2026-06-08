@@ -10,8 +10,13 @@ import {
 } from "@/features/analytics/services/analytics.service";
 import { canTrackEvent } from "@/features/billing/services/billing.service";
 import { trackRateLimit, getIp, redis } from "@/lib/rate-limit";
+import { canUseLocalhostDomains, isTrustedOrigin, normalizeDomain } from "@/lib/domain";
 
 export const runtime = "nodejs";
+
+const MAX_TRACKING_PAYLOAD_BYTES = 16 * 1024;
+const MAX_EVENT_AGE_MS = 10 * 60 * 1000;
+const MAX_EVENT_FUTURE_SKEW_MS = 60 * 1000;
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -68,6 +73,14 @@ function createTrackEventPayload(
 export async function POST(req: Request) {
   try {
     const ip = getIp(req);
+    const contentLength = Number(req.headers.get("content-length") ?? 0);
+
+    if (contentLength > MAX_TRACKING_PAYLOAD_BYTES) {
+      return Response.json(
+        { error: "Payload too large" },
+        { status: 413, headers: corsHeaders }
+      );
+    }
 
     // 1. Rate Limiting Protection (IP-based)
     const { success: rateLimitSuccess } = await trackRateLimit.limit(`track_${ip}`);
@@ -76,16 +89,11 @@ export async function POST(req: Request) {
       return Response.json({ error: "Too many requests" }, { status: 429, headers: corsHeaders });
     }
 
-    let body;
+    let body: unknown;
     try {
       body = await req.json();
     } catch {
-      const text = await req.text();
-      try {
-        body = JSON.parse(text);
-      } catch {
-        return Response.json({ error: "Invalid JSON body" }, { status: 400, headers: corsHeaders });
-      }
+      return Response.json({ error: "Invalid JSON body" }, { status: 400, headers: corsHeaders });
     }
 
     const validated = trackEventSchema.safeParse(body);
@@ -98,6 +106,24 @@ export async function POST(req: Request) {
       // Generic error to avoid exposing internals
       return Response.json(
         { error: "Invalid payload format" },
+        { status: 400, headers: corsHeaders }
+      );
+    }
+
+    const eventTime = new Date(validated.data.timestamp);
+    const eventAge = Date.now() - eventTime.getTime();
+
+    if (
+      eventAge > MAX_EVENT_AGE_MS ||
+      eventAge < -MAX_EVENT_FUTURE_SKEW_MS
+    ) {
+      logWarn("Track event rejected due to timestamp skew", {
+        ip,
+        siteId: validated.data.siteId,
+      });
+
+      return Response.json(
+        { error: "Invalid event timestamp" },
         { status: 400, headers: corsHeaders }
       );
     }
@@ -128,29 +154,36 @@ export async function POST(req: Request) {
     // 3. Trusted Domain Validation
     // Ensures requests are coming from the registered website domain (or its subdomains)
     const origin = req.headers.get("origin") || req.headers.get("referer") || "";
-    if (origin) {
-      try {
-        const originUrl = new URL(origin);
-        const originHostname = originUrl.hostname.toLowerCase();
-        const expectedDomain = website.domain.toLowerCase();
-        
-        // Allow exact matches or subdomains (e.g. www.)
-        const isTrusted = originHostname === expectedDomain || originHostname.endsWith(`.${expectedDomain}`);
-        
-        if (!isTrusted) {
-          logWarn("Origin domain mismatch", { originHostname, expectedDomain, ip });
-          return Response.json({ error: "Unauthorized origin" }, { status: 403, headers: corsHeaders });
-        }
-      } catch (_e) {
-        // If origin/referer is malformed, we might want to log it
-        logWarn("Malformed origin header", { origin, ip });
-      }
+    const expectedDomain = normalizeDomain(website.domain, {
+      allowLocalhost: canUseLocalhostDomains(),
+    });
+
+    if (!expectedDomain) {
+      logWarn("Track request rejected due to invalid configured domain", {
+        websiteId: website.id,
+        ip,
+      });
+
+      return Response.json(
+        { error: "Invalid configuration" },
+        { status: 403, headers: corsHeaders }
+      );
+    }
+
+    if (!origin && process.env.NODE_ENV === "production") {
+      logWarn("Track request missing origin", { websiteId: website.id, ip });
+      return Response.json({ error: "Missing origin" }, { status: 403, headers: corsHeaders });
+    }
+
+    if (origin && !isTrustedOrigin(origin, expectedDomain)) {
+      logWarn("Origin domain mismatch", { origin, expectedDomain, ip });
+      return Response.json({ error: "Unauthorized origin" }, { status: 403, headers: corsHeaders });
     }
 
     // 4. Event Deduplication (Spam / Rapid Refresh protection)
-    // Keys expire in 10 seconds. NX ensures we only proceed if the key was freshly set.
-    const dedupKey = `dedup:${website.id}:${validated.data.visitorId}:${validated.data.path}`;
-    const isNewEvent = await redis.set(dedupKey, "1", { ex: 10, nx: true });
+    // Keys expire quickly. NX ensures we only proceed if the key was freshly set.
+    const dedupKey = `dedup:${website.id}:${validated.data.visitorId}:${validated.data.sessionId}:${validated.data.path}`;
+    const isNewEvent = await redis.set(dedupKey, "1", { ex: 15, nx: true });
     
     if (!isNewEvent) {
       logInfo("Duplicate rapid event ignored", { 

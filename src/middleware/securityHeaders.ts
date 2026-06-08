@@ -14,14 +14,16 @@ export function applySecurityHeaders(req: NextRequest) {
   // Content Security Policy
   const csp = [
     "default-src 'self'",
-    `script-src 'self' 'unsafe-inline' 'unsafe-eval' ${isDev ? "blob:" : ""}`,
+    `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval' blob:" : ""}`,
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob:",
     "font-src 'self'",
     `connect-src 'self' https://api.upstash.io https://api.neon.tech ${isDev ? "ws: localhost:*" : ""}`,
+    "object-src 'none'",
     "frame-ancestors 'none'",
     "base-uri 'self'",
     "form-action 'self'",
+    ...(isDev ? [] : ["upgrade-insecure-requests"]),
   ].join('; ');
 
   res.headers.set('Content-Security-Policy', csp);
@@ -31,8 +33,14 @@ export function applySecurityHeaders(req: NextRequest) {
   res.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   res.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
 
-  // Disable caching for dynamic pages, enable long caching for static assets (handled elsewhere)
-  if (!req.nextUrl.pathname.startsWith('/_next/static')) {
+  // Disable caching for authenticated app surfaces and APIs.
+  if (
+    req.nextUrl.pathname.startsWith('/dashboard') ||
+    req.nextUrl.pathname.startsWith('/websites') ||
+    req.nextUrl.pathname.startsWith('/settings') ||
+    req.nextUrl.pathname.startsWith('/billing') ||
+    req.nextUrl.pathname.startsWith('/api')
+  ) {
     res.headers.set('Cache-Control', 'no-store');
   }
 

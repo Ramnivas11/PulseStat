@@ -10,7 +10,7 @@ import {
   YAxis,
 } from "recharts";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import type { DailyStatPoint } from "@/features/analytics/services/analytics.service";
 
 interface PageViewsChartProps {
@@ -22,7 +22,7 @@ export function PageViewsChart({ data }: PageViewsChartProps) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Traffic Trend</CardTitle>
+          <div className="font-heading text-base font-semibold tracking-tight text-white">Traffic Trend</div>
         </CardHeader>
 
         <CardContent>
@@ -35,51 +35,49 @@ export function PageViewsChart({ data }: PageViewsChartProps) {
   }
 
   return (
-    <Card className="glass shadow-xl border-white/20">
-      <CardHeader className="border-b bg-muted/30">
-        <CardTitle className="text-lg font-semibold flex items-center gap-2 text-primary">
-          Traffic Trend
-        </CardTitle>
+    <Card className="relative">
+      <CardHeader className="border-b border-border bg-muted/10 pb-4">
+        <div className="flex flex-col">
+          <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">{"// traffic analytics"}</span>
+          <span className="font-heading text-base font-semibold tracking-tight text-white block">Traffic Trend</span>
+        </div>
       </CardHeader>
 
       <CardContent className="pt-6">
         <div className="h-[350px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={data} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
-              <defs>
-                <linearGradient id="lineGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.1}/>
-                  <stop offset="95%" stopColor="var(--primary)" stopOpacity={0}/>
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="oklch(var(--border))" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" />
               <XAxis 
                 dataKey="date" 
                 axisLine={false}
                 tickLine={false}
-                tick={{ fill: "oklch(var(--muted-foreground))", fontSize: 12 }} 
+                tick={{ fill: "var(--muted-foreground)", fontSize: 10, fontFamily: "var(--font-mono)" }} 
                 dy={10}
               />
               <YAxis 
                 axisLine={false}
                 tickLine={false}
-                tick={{ fill: "oklch(var(--muted-foreground))", fontSize: 12 }} 
+                tick={{ fill: "var(--muted-foreground)", fontSize: 10, fontFamily: "var(--font-mono)" }} 
               />
               <Tooltip 
                 contentStyle={{ 
-                  backgroundColor: "oklch(var(--card))", 
-                  borderColor: "oklch(var(--border))",
-                  borderRadius: "8px",
-                  boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)"
+                  backgroundColor: "var(--card)", 
+                  borderColor: "var(--border)",
+                  borderRadius: "0px",
+                  boxShadow: "none",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "11px",
+                  color: "#fff"
                 }}
               />
               <Line
                 type="monotone"
                 dataKey="pageviews"
                 stroke="var(--primary)"
-                strokeWidth={4}
-                dot={{ r: 4, fill: "var(--primary)", strokeWidth: 2, stroke: "oklch(var(--background))" }}
-                activeDot={{ r: 6, strokeWidth: 0 }}
+                strokeWidth={2}
+                dot={{ r: 3, fill: "var(--primary)", strokeWidth: 1, stroke: "var(--background)" }}
+                activeDot={{ r: 5, strokeWidth: 0 }}
               />
             </LineChart>
           </ResponsiveContainer>

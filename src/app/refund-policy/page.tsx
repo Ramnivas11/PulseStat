@@ -24,7 +24,7 @@ export default function RefundPolicyPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">1. Subscription Refunds</h2>
             <p className="mb-4">
-              We offer a 30-day money-back guarantee for new Pro subscriptions. If you're not satisfied with our service within the first 30 days, you can request a full refund.
+              We offer a 30-day money-back guarantee for new Pro subscriptions. If you&apos;re not satisfied with our service within the first 30 days, you can request a full refund.
             </p>
             <p className="mb-4">
               Refund requests must be made within 30 days of the initial subscription purchase.

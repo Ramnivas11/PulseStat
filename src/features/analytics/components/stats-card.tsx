@@ -2,7 +2,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 
 interface StatsCardProps {
@@ -15,15 +14,21 @@ export function StatsCard({
   value,
 }: StatsCardProps) {
   return (
-    <Card className="glass shadow-lg border-white/20 transition-all hover:scale-[1.02] hover:shadow-blue-500/10">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-          {title}
-        </CardTitle>
+    <Card className="relative hover:border-primary/50 transition-colors duration-200">
+      {/* Corner indicators for telemetry look */}
+      <div className="absolute top-0 left-0 w-[1px] h-[1px] bg-primary" />
+      <div className="absolute top-0 right-0 w-[1px] h-[1px] bg-primary" />
+      <div className="absolute bottom-0 left-0 w-[1px] h-[1px] bg-primary" />
+      <div className="absolute bottom-0 right-0 w-[1px] h-[1px] bg-primary" />
+      
+      <CardHeader className="pb-1">
+        <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase">
+          {"// "}{title}
+        </span>
       </CardHeader>
 
-      <CardContent>
-        <p className="text-3xl font-extrabold tracking-tight bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
+      <CardContent className="pb-4">
+        <p className="text-3xl font-mono font-bold tracking-tight text-white">
           {value}
         </p>
       </CardContent>

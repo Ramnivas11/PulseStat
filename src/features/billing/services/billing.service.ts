@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/prisma";
 import { PLANS, type PlanKey } from "@/config/plans";
-import crypto from "crypto";
 
 export type BillingPlan = "free" | "pro";
 export type SubscriptionStatus = "pending" | "active" | "cancelled";
@@ -12,6 +11,7 @@ export type SubscriptionStatus = "pending" | "active" | "cancelled";
 export async function getCurrentSubscription(userId: string) {
   const subscription = await prisma.subscription.findUnique({
     where: { userId },
+    select: { id: true, plan: true, status: true, currentPeriodEnd: true, paddleCustomerId: true, paddleSubscriptionId: true, paddlePriceId: true, createdAt: true },
   });
 
   return subscription;
@@ -24,6 +24,7 @@ export async function getCurrentSubscription(userId: string) {
 export async function getUserPlan(userId: string): Promise<PlanKey> {
   const subscription = await prisma.subscription.findUnique({
     where: { userId },
+    select: { status: true, plan: true, currentPeriodEnd: true },
   });
 
   if (!subscription || subscription.status !== "active") {
@@ -85,15 +86,17 @@ export async function getMonthlyEventUsage(
   const now = new Date();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
 
-  const result = await prisma.dailyStat.aggregate({
-    where: {
-      website: { userId },
-      date: { gte: monthStart },
-    },
-    _sum: { pageviews: true },
-  });
+  // OPTIMIZED: Use raw SQL join to avoid Prisma relation filtering inefficiency
+  const result = await prisma.$queryRawUnsafe<[{ total: number }]>(
+    `SELECT COALESCE(SUM("pageviews"), 0) as total FROM "DailyStat"
+     WHERE "websiteId" IN (
+       SELECT "id" FROM "Website" WHERE "userId" = $1
+     ) AND "date" >= $2`,
+    userId,
+    monthStart
+  );
 
-  return result._sum.pageviews ?? 0;
+  return result[0]?.total ?? 0;
 }
 
 // ---------------------------------------------------------------------------

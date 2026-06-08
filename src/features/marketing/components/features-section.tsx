@@ -38,44 +38,49 @@ const features = [
 
 export function FeaturesSection() {
   return (
-    <section id="features" className="py-24 md:py-32">
-      <div className="container mx-auto px-4 md:px-6 max-w-6xl">
+    <section id="features" className="py-24 md:py-32 border-t border-border/60 bg-black relative">
+      <div className="container mx-auto px-6 max-w-6xl">
         <div className="text-center max-w-3xl mx-auto mb-16 md:mb-24">
           <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-3xl md:text-5xl font-bold tracking-tight mb-4"
+            className="text-3xl md:text-5xl font-heading font-black tracking-tight mb-4 uppercase text-white"
           >
             Everything you need. <br className="hidden md:block" />
-            <span className="text-muted-foreground">Nothing you don&apos;t.</span>
+            <span className="text-primary">Nothing you don&apos;t.</span>
           </motion.h2>
           <motion.p 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-lg text-muted-foreground"
+            className="text-xs font-mono uppercase tracking-wider text-muted-foreground"
           >
-            We built PulseStat to solve the exact problems developers face with legacy analytics tools.
+            {"// Built to solve the exact bottlenecks developers face with legacy analytics tools."}
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="group relative p-6 md:p-8 rounded-3xl border bg-card hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              transition={{ delay: index * 0.05 }}
+              className="group relative p-6 border border-border bg-card hover:border-primary/50 transition-colors duration-200"
             >
-              <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform duration-300">
-                <feature.icon className="h-6 w-6" />
+              <div className="flex justify-between items-center mb-6">
+                <div className="w-10 h-10 border border-primary/20 bg-primary/5 flex items-center justify-center text-primary">
+                  <feature.icon className="h-5 w-5" />
+                </div>
+                <span className="font-mono text-xs text-muted-foreground/30 font-bold">
+                  [0{index + 1}]
+                </span>
               </div>
-              <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">
+              <h3 className="text-sm font-heading font-bold uppercase text-white mb-3 tracking-tight">{feature.title}</h3>
+              <p className="text-xs text-muted-foreground font-mono uppercase leading-relaxed">
                 {feature.description}
               </p>
             </motion.div>

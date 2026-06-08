@@ -7,5 +7,6 @@ export const createWebsiteSchema = z.object({
 
   domain: z
     .string()
-    .min(3, "Domain is required"),
+    .min(3, "Domain is required")
+    .max(253, "Domain is too long"),
 });

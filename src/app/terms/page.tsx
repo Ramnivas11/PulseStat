@@ -24,7 +24,7 @@ export default function TermsPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">1. Acceptance of Terms</h2>
             <p className="mb-4">
-              By accessing and using PulseStat ("the Service"), you accept and agree to be bound by the terms and provision of this agreement.
+              By accessing and using PulseStat (&quot;the Service&quot;), you accept and agree to be bound by the terms and provision of this agreement.
             </p>
           </section>
 
@@ -58,9 +58,9 @@ export default function TermsPage() {
             <ul className="list-disc pl-6 mb-4">
               <li>Use the service for any illegal purposes</li>
               <li>Attempt to gain unauthorized access to our systems</li>
-              <li>Interfere with the service's operation</li>
+              <li>Interfere with the service&apos;s operation</li>
               <li>Use the service to track users without consent</li>
-              <li>Exceed your plan's usage limits</li>
+              <li>Exceed your plan&apos;s usage limits</li>
             </ul>
           </section>
 

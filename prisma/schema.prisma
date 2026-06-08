@@ -10,6 +10,7 @@ model User {
   id          String   @id @default(cuid())
   email       String   @unique
   name        String?
+  settings    Json?
   password    String
   createdAt   DateTime @default(now())
 
@@ -25,11 +26,15 @@ model Website {
   createdAt   DateTime @default(now())
 
   userId      String
-  user        User @relation(fields: [userId], references: [id])
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   events      Event[]
   dailyStats  DailyStat[]
+  dailyVisitors DailyVisitor[]
+  dailySessions DailySession[]
   pageStats   PageStat[]
+
+  @@index([userId])
 }
 
 model Event {
@@ -55,12 +60,14 @@ model Event {
   lastActiveAt DateTime?
 
   websiteId   String
-  website     Website @relation(fields: [websiteId], references: [id])
+  website     Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
 
   @@index([websiteId])
   @@index([websiteId, lastActiveAt])
+  @@index([websiteId, createdAt])
+  @@index([websiteId, visitorId])
+  @@index([websiteId, sessionId])
   @@index([createdAt])
-  @@index([visitorId])
 }
 
 model DailyStat {
@@ -73,11 +80,42 @@ model DailyStat {
   sessions    Int      @default(0)
 
   websiteId   String
-  website     Website @relation(fields: [websiteId], references: [id])
+  website     Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
 
   @@index([websiteId])
   @@index([date])
+  @@index([websiteId, date])
   @@unique([websiteId, date])
+}
+
+model DailyVisitor {
+  id          String   @id @default(cuid())
+
+  date        DateTime
+  visitorId   String
+
+  websiteId   String
+  website     Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+
+  @@index([websiteId])
+  @@index([date])
+  @@index([websiteId, date])
+  @@unique([websiteId, date, visitorId])
+}
+
+model DailySession {
+  id          String   @id @default(cuid())
+
+  date        DateTime
+  sessionId   String
+
+  websiteId   String
+  website     Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+
+  @@index([websiteId])
+  @@index([date])
+  @@index([websiteId, date])
+  @@unique([websiteId, date, sessionId])
 }
 
 
@@ -88,10 +126,11 @@ model PageStat {
   views       Int      @default(0)
 
   websiteId   String
-  website     Website @relation(fields: [websiteId], references: [id])
+  website     Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
 
   @@index([websiteId])
   @@index([path])
+  @@index([websiteId, views])
   @@unique([websiteId, path])
 }
 
@@ -112,5 +151,5 @@ model Subscription {
 
   userId      String   @unique
 
-  user        User @relation(fields: [userId], references: [id])
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

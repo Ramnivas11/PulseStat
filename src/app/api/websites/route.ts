@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { createWebsiteSchema } from "@/validations/website";
 
 import { successResponse, errorResponse, apiErrorHandler } from "@/lib/api-helpers";
+import { canUseLocalhostDomains, normalizeDomain } from "@/lib/domain";
 
 import { createWebsite, getWebsitesByUserId } from "@/features/websites/services/website.service";
 import { canCreateWebsite } from "@/features/billing/services/billing.service";
@@ -48,6 +49,14 @@ export async function POST(req: Request) {
       return errorResponse("Invalid payload", 400);
     }
 
+    const normalizedDomain = normalizeDomain(validated.data.domain, {
+      allowLocalhost: canUseLocalhostDomains(),
+    });
+
+    if (!normalizedDomain) {
+      return errorResponse("Enter a valid domain, such as example.com", 400);
+    }
+
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
     });
@@ -74,7 +83,7 @@ export async function POST(req: Request) {
 
     const website = await createWebsite({
       name: validated.data.name,
-      domain: validated.data.domain,
+      domain: normalizedDomain,
       userId: user.id,
       siteKey: `site_${uuidv4()}`,
     });

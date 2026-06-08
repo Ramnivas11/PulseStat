@@ -2,39 +2,39 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="border-t bg-muted/50">
-      <div className="container mx-auto px-4 py-8">
+    <footer className="border-t border-border bg-black">
+      <div className="container mx-auto px-6 py-6 max-w-7xl">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">
-              © 2026 PulseStat. All rights reserved.
+            <span className="font-mono text-xs text-muted-foreground uppercase">
+              © 2026 PulseStat // all rights reserved.
             </span>
           </div>
 
           <nav className="flex items-center gap-6">
             <Link
               href="/pricing"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="font-mono text-xs uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors"
             >
-              Pricing
+              pricing
             </Link>
             <Link
               href="/terms"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="font-mono text-xs uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors"
             >
-              Terms
+              terms
             </Link>
             <Link
               href="/privacy"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="font-mono text-xs uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors"
             >
-              Privacy
+              privacy
             </Link>
             <Link
               href="/refund-policy"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="font-mono text-xs uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors"
             >
-              Refunds
+              refunds
             </Link>
           </nav>
         </div>

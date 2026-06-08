@@ -21,82 +21,82 @@ export function Navbar() {
     <header
       className={`fixed top-0 w-full z-50 transition-all duration-300 border-b ${
         isScrolled
-          ? "bg-background/80 backdrop-blur-md border-border shadow-sm"
+          ? "bg-black/95 backdrop-blur-md border-border"
           : "bg-transparent border-transparent"
       }`}
     >
       <div className="container mx-auto px-4 md:px-6 h-16 flex items-center justify-between max-w-6xl">
         <div className="flex items-center gap-2">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="bg-primary/10 p-1.5 rounded-lg text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-              <Activity className="h-5 w-5" />
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <div className="bg-primary/10 border border-primary/30 p-1.5 rounded-none text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+              <Activity className="h-4 w-4" />
             </div>
-            <span className="font-bold text-xl tracking-tight">PulseStat</span>
+            <span className="font-heading font-bold text-lg tracking-tight text-white">PulseStat</span>
           </Link>
         </div>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
-          <Link href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
-            Features
+        <nav className="hidden md:flex items-center gap-8 text-[11px] font-mono uppercase tracking-wider">
+          <Link href="#features" className="text-muted-foreground hover:text-primary transition-colors">
+            {"// features"}
           </Link>
-          <Link href="#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors">
-            How it works
+          <Link href="#how-it-works" className="text-muted-foreground hover:text-primary transition-colors">
+            {"// process"}
           </Link>
-          <Link href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors">
-            Pricing
+          <Link href="#pricing" className="text-muted-foreground hover:text-primary transition-colors">
+            {"// pricing"}
           </Link>
-          <Link href="/docs" className="text-muted-foreground hover:text-foreground transition-colors">
-            Docs
+          <Link href="/docs" className="text-muted-foreground hover:text-primary transition-colors">
+            {"// documentation"}
           </Link>
         </nav>
 
         {/* Desktop Actions */}
-        <div className="hidden md:flex items-center gap-4">
-          <Link href="/login" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            Log in
+        <div className="hidden md:flex items-center gap-5">
+          <Link href="/login" className="text-xs font-mono uppercase tracking-wider text-muted-foreground hover:text-white transition-colors">
+            login
           </Link>
           <Link href="/dashboard">
-            <Button size="sm" className="rounded-full px-5">
-              Dashboard
+            <Button size="sm" className="font-mono text-xs uppercase px-4 rounded-none">
+              {"dashboard // enter"}
             </Button>
           </Link>
         </div>
 
         {/* Mobile Toggle */}
         <button
-          className="md:hidden p-2 text-muted-foreground"
+          className="md:hidden p-2 text-muted-foreground border border-border rounded-none bg-muted/10"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
-          {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-16 left-0 w-full bg-background border-b shadow-lg py-4 px-4 flex flex-col gap-4">
-          <Link href="#features" onClick={() => setMobileMenuOpen(false)} className="px-4 py-2 text-sm font-medium hover:bg-muted rounded-md">
-            Features
+        <div className="md:hidden absolute top-16 left-0 w-full bg-black border-b border-border py-4 px-4 flex flex-col gap-4">
+          <Link href="#features" onClick={() => setMobileMenuOpen(false)} className="px-4 py-2 text-xs font-mono uppercase tracking-wider hover:bg-muted/40 rounded-none text-muted-foreground hover:text-white">
+            {"// features"}
           </Link>
-          <Link href="#how-it-works" onClick={() => setMobileMenuOpen(false)} className="px-4 py-2 text-sm font-medium hover:bg-muted rounded-md">
-            How it works
+          <Link href="#how-it-works" onClick={() => setMobileMenuOpen(false)} className="px-4 py-2 text-xs font-mono uppercase tracking-wider hover:bg-muted/40 rounded-none text-muted-foreground hover:text-white">
+            {"// process"}
           </Link>
-          <Link href="#pricing" onClick={() => setMobileMenuOpen(false)} className="px-4 py-2 text-sm font-medium hover:bg-muted rounded-md">
-            Pricing
+          <Link href="#pricing" onClick={() => setMobileMenuOpen(false)} className="px-4 py-2 text-xs font-mono uppercase tracking-wider hover:bg-muted/40 rounded-none text-muted-foreground hover:text-white">
+            {"// pricing"}
           </Link>
-          <Link href="/docs" onClick={() => setMobileMenuOpen(false)} className="px-4 py-2 text-sm font-medium hover:bg-muted rounded-md">
-            Docs
+          <Link href="/docs" onClick={() => setMobileMenuOpen(false)} className="px-4 py-2 text-xs font-mono uppercase tracking-wider hover:bg-muted/40 rounded-none text-muted-foreground hover:text-white">
+            {"// documentation"}
           </Link>
-          <hr className="my-2" />
-          <div className="flex flex-col gap-2 px-4">
+          <hr className="border-border my-1" />
+          <div className="flex flex-col gap-2 px-2">
             <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
-              <Button variant="outline" className="w-full justify-center">
-                Log in
+              <Button variant="outline" className="w-full justify-center rounded-none font-mono text-xs uppercase">
+                login
               </Button>
             </Link>
             <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
-              <Button className="w-full justify-center">
-                Dashboard
+              <Button className="w-full justify-center rounded-none font-mono text-xs uppercase">
+                dashboard
               </Button>
             </Link>
           </div>

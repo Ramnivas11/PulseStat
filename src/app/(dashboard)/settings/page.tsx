@@ -1,3 +1,5 @@
+import SettingsShell from "@/features/settings/SettingsShell";
+
 export default function Page() {
-  return <div>Page</div>;
+  return <SettingsShell />;
 }

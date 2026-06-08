@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { authRateLimit, getIp } from "@/lib/rate-limit";
+import { signupSchema } from "@/lib/validations/auth";
 
 export const runtime = "nodejs";
 
@@ -18,10 +19,18 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json();
+    const validated = signupSchema.safeParse(body);
+
+    if (!validated.success) {
+      return Response.json(
+        { error: "Invalid signup details" },
+        { status: 400 }
+      );
+    }
 
     const existingUser = await prisma.user.findUnique({
       where: {
-        email: body.email,
+        email: validated.data.email,
       },
     });
 
@@ -37,15 +46,20 @@ export async function POST(req: Request) {
     }
 
     const hashedPassword = await bcrypt.hash(
-      body.password,
+      validated.data.password,
       10
     );
 
     const user = await prisma.user.create({
       data: {
-        email: body.email,
+        email: validated.data.email,
         password: hashedPassword,
-        name: body.name,
+        name: validated.data.name,
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
       },
     });
 
@@ -53,7 +67,7 @@ export async function POST(req: Request) {
       success: true,
       user,
     });
-  } catch (_error) {
+  } catch {
     return Response.json(
       { error: "An unexpected error occurred during signup." },
       { status: 500 }

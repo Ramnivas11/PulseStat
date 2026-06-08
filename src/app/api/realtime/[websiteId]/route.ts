@@ -1,7 +1,10 @@
 import { auth } from "@/lib/auth";
-import { logError, logWarn } from "@/lib/logger";
+import { logWarn } from "@/lib/logger";
 import { successResponse, errorResponse, apiErrorHandler } from "@/lib/api-helpers";
-import { getActiveVisitors } from "@/features/analytics/services/analytics.service";
+import {
+  ACTIVE_VISITOR_WINDOW_SECONDS,
+  getActiveVisitors,
+} from "@/features/analytics/services/analytics.service";
 import { getWebsiteByIdForUser } from "@/features/websites/services/website.service";
 
 export const runtime = "nodejs";
@@ -37,7 +40,7 @@ export async function GET(
 
     return successResponse({
       activeVisitors,
-      windowSeconds: 30,
+      windowSeconds: ACTIVE_VISITOR_WINDOW_SECONDS,
       polledAt: new Date().toISOString(),
     });
   } catch (error) {

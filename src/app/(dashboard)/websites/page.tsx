@@ -11,22 +11,24 @@ import { WebsiteCard } from "@/features/websites/components/website-card";
 import { CreateWebsiteForm } from "@/features/websites/components/create-website-form";
 
 import { canCreateWebsite } from "@/features/billing/services/billing.service";
+import { getWebsitesByUserId } from "@/features/websites/services/website.service";
 import { UpgradePrompt } from "@/features/billing/components/upgrade-prompt";
 
 export default async function WebsitesPage() {
   const session = await auth();
 
+  // OPTIMIZED: Use minimal user query
   const user = await prisma.user.findUnique({
     where: {
       email: session?.user?.email || "",
     },
-
-    include: {
-      websites: true,
-    },
+    select: { id: true },
   });
 
   if (!user) return null;
+
+  // OPTIMIZED: Use optimized website query function with proper .select()
+  const websites = await getWebsitesByUserId(user.id);
 
   const permission = await canCreateWebsite(user.id);
 
@@ -46,14 +48,14 @@ export default async function WebsitesPage() {
         />
       )}
 
-      {user?.websites.length === 0 ? (
+      {websites.length === 0 ? (
         <EmptyState
           title="No websites yet"
           description="Create your first website."
         />
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {user?.websites.map((website) => (
+          {websites.map((website) => (
             <WebsiteCard
               key={website.id}
               name={website.name}

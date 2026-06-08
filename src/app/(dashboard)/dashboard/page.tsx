@@ -25,7 +25,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import {
   Table,
@@ -155,34 +154,35 @@ export default async function DashboardPage(props: Props) {
             <PageViewsChart data={dailyStats} />
 
             <div className="space-y-8">
-              <Card className="glass overflow-hidden shadow-lg border-white/20">
-                <CardHeader className="border-b bg-muted/30 pb-4">
-                  <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                    <BarChart3 className="h-5 w-5 text-primary" />
-                    Top Pages
-                  </CardTitle>
+              <Card className="relative hover:border-primary/50 transition-colors">
+                <CardHeader className="border-b border-border bg-muted/10 pb-4">
+                  <div className="flex flex-col">
+                    <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">{"// breakdown"}</span>
+                    <span className="font-heading text-base font-semibold tracking-tight text-white block flex items-center gap-2">
+                      <BarChart3 className="h-4 w-4 text-primary" />
+                      Top Pages
+                    </span>
+                  </div>
                 </CardHeader>
                 <CardContent className="p-0">
                   {topPages.length === 0 ? (
-                    <div className="p-6 text-center">
-                      <p className="text-sm text-muted-foreground">
-                        No page data available yet.
-                      </p>
+                    <div className="p-6 text-center font-mono text-xs text-muted-foreground uppercase">
+                      {"// No page data available"}
                     </div>
                   ) : (
                     <div className="overflow-x-auto">
                       <Table>
-                        <TableHeader className="bg-muted/30">
+                        <TableHeader className="bg-muted/10 border-b border-border">
                           <TableRow>
-                            <TableHead className="w-full font-medium">Path</TableHead>
-                            <TableHead className="text-right font-medium">Views</TableHead>
+                            <TableHead className="w-full font-mono text-[9px] tracking-wider uppercase text-muted-foreground">Path</TableHead>
+                            <TableHead className="text-right font-mono text-[9px] tracking-wider uppercase text-muted-foreground">Views</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
                           {topPages.map((page) => (
-                            <TableRow key={page.path} className="hover:bg-muted/20 transition-colors">
-                              <TableCell className="font-medium max-w-[200px] truncate">{page.path}</TableCell>
-                              <TableCell className="text-right tabular-nums">
+                            <TableRow key={page.path} className="hover:bg-muted/10 border-b border-border/40 transition-colors">
+                              <TableCell className="font-mono text-xs text-white max-w-[200px] truncate">{page.path}</TableCell>
+                              <TableCell className="text-right font-mono text-xs text-primary tabular-nums">
                                 {page.views.toLocaleString()}
                               </TableCell>
                             </TableRow>
@@ -194,24 +194,27 @@ export default async function DashboardPage(props: Props) {
                 </CardContent>
               </Card>
 
-              <Card className="glass shadow-lg border-white/20">
-                <CardHeader className="border-b bg-muted/30 pb-4">
-                  <CardTitle className="text-lg font-semibold">Browser Breakdown</CardTitle>
+              <Card className="relative hover:border-primary/50 transition-colors">
+                <CardHeader className="border-b border-border bg-muted/10 pb-4">
+                  <div className="flex flex-col">
+                    <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">{"// breakdown"}</span>
+                    <span className="font-heading text-base font-semibold tracking-tight text-white block">Browser Breakdown</span>
+                  </div>
                 </CardHeader>
                 <CardContent className="pt-6">
                   {browsers.length === 0 ? (
-                    <p className="text-sm text-muted-foreground text-center py-4">
-                      No browser analytics yet.
+                    <p className="font-mono text-xs text-muted-foreground text-center py-4 uppercase">
+                      {"// No browser analytics"}
                     </p>
                   ) : (
-                    <div className="space-y-4">
+                    <div className="space-y-3">
                       {browsers.map((browser) => (
                         <div
                           key={browser.browser}
-                          className="flex items-center justify-between"
+                          className="flex items-center justify-between border-b border-border/40 pb-2 last:border-0 last:pb-0"
                         >
-                          <span className="text-sm font-medium">{browser.browser}</span>
-                          <span className="font-bold tabular-nums text-primary bg-primary/10 px-2 py-0.5 rounded">
+                          <span className="font-mono text-xs uppercase text-muted-foreground">{browser.browser}</span>
+                          <span className="font-mono text-[10px] font-bold tabular-nums text-primary border border-primary/20 bg-primary/5 px-2 py-0.5">
                             {browser.count.toLocaleString()}
                           </span>
                         </div>
@@ -221,24 +224,27 @@ export default async function DashboardPage(props: Props) {
                 </CardContent>
               </Card>
 
-              <Card className="glass shadow-lg border-white/20">
-                <CardHeader className="border-b bg-muted/30 pb-4">
-                  <CardTitle className="text-lg font-semibold">Device Breakdown</CardTitle>
+              <Card className="relative hover:border-primary/50 transition-colors">
+                <CardHeader className="border-b border-border bg-muted/10 pb-4">
+                  <div className="flex flex-col">
+                    <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">{"// breakdown"}</span>
+                    <span className="font-heading text-base font-semibold tracking-tight text-white block">Device Breakdown</span>
+                  </div>
                 </CardHeader>
                 <CardContent className="pt-6">
                   {devices.length === 0 ? (
-                    <p className="text-sm text-muted-foreground text-center py-4">
-                      No device analytics yet.
+                    <p className="font-mono text-xs text-muted-foreground text-center py-4 uppercase">
+                      {"// No device analytics"}
                     </p>
                   ) : (
-                    <div className="space-y-4">
+                    <div className="space-y-3">
                       {devices.map((device) => (
                         <div
                           key={device.device}
-                          className="flex items-center justify-between"
+                          className="flex items-center justify-between border-b border-border/40 pb-2 last:border-0 last:pb-0"
                         >
-                          <span className="text-sm font-medium">{device.device}</span>
-                          <span className="font-bold tabular-nums text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded">
+                          <span className="font-mono text-xs uppercase text-muted-foreground">{device.device}</span>
+                          <span className="font-mono text-[10px] font-bold tabular-nums text-primary border border-primary/20 bg-primary/5 px-2 py-0.5">
                             {device.count.toLocaleString()}
                           </span>
                         </div>

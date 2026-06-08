@@ -2,7 +2,7 @@
 
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
-import { Menu, LogOut, User, BarChart3 } from "lucide-react";
+import { Menu, LogOut, BarChart3 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Sidebar } from "./sidebar";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
@@ -22,26 +22,26 @@ export function Navbar() {
   const userInitials = session?.user?.name?.slice(0, 2).toUpperCase() || "PS";
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b glass">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-black/95 backdrop-blur-md">
       <div className="container flex h-16 items-center justify-between px-4 md:px-6 max-w-7xl mx-auto">
         <div className="flex items-center gap-4">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden">
+              <Button variant="ghost" size="icon" className="md:hidden rounded-none border border-border">
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="p-0 w-72">
+            <SheetContent side="left" className="p-0 w-72 bg-black border-r border-border rounded-none">
               <Sidebar />
             </SheetContent>
           </Sheet>
           
-          <Link href="/" className="flex items-center gap-2 transition-opacity hover:opacity-80">
-            <BarChart3 className="h-6 w-6 text-primary" />
-            <h1 className="text-xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-emerald-500 bg-clip-text text-transparent">
+          <Link href="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-85">
+            <BarChart3 className="h-5 w-5 text-primary" />
+            <span className="text-lg font-heading font-bold tracking-tight text-white">
               PulseStat
-            </h1>
+            </span>
           </Link>
         </div>
 
@@ -50,9 +50,9 @@ export function Navbar() {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-              <Avatar className="h-8 w-8 border">
-                <AvatarFallback className="bg-primary/10 text-primary text-xs font-medium">
+            <Button variant="ghost" className="relative h-8 w-8 rounded-none border border-border bg-muted/20">
+              <Avatar className="h-8 w-8 rounded-none">
+                <AvatarFallback className="bg-primary/10 text-primary text-xs font-mono rounded-none">
                   {userInitials}
                 </AvatarFallback>
               </Avatar>

@@ -4,35 +4,31 @@ import { motion } from "framer-motion";
 
 export function SocialProofSection() {
   return (
-    <section className="py-12 border-b bg-muted/20">
-      <div className="container mx-auto px-4 md:px-6 max-w-6xl">
+    <section className="py-10 border-b border-border bg-black">
+      <div className="container mx-auto px-6 max-w-6xl">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="flex flex-col items-center text-center space-y-8"
+          transition={{ duration: 0.4 }}
+          className="flex flex-col items-center text-center space-y-6"
         >
-          <p className="text-sm font-medium text-muted-foreground tracking-wider uppercase">
-            Trusted by modern product teams
+          <p className="font-mono text-[9px] tracking-widest text-muted-foreground/50 uppercase">
+            {"// TRUSTED BY MODERN INFRASTRUCTURE TEAMS"}
           </p>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16 w-full items-center justify-center opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
-            {/* These would ideally be SVGs of logos. Using stylized text for the demo. */}
-            <div className="flex items-center justify-center">
-              <span className="text-xl font-bold font-serif">Acme Corp</span>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full items-center justify-center font-mono text-[11px] tracking-wider uppercase text-muted-foreground/60">
+            <div className="flex items-center justify-center border border-border/40 py-2.5 bg-card hover:text-primary transition-colors">
+              <span>[ ACME_CORP ]</span>
             </div>
-            <div className="flex items-center justify-center">
-              <span className="text-xl font-black tracking-tighter">GLOBEX</span>
+            <div className="flex items-center justify-center border border-border/40 py-2.5 bg-card hover:text-primary transition-colors">
+              <span>[ GLOBEX_SYS ]</span>
             </div>
-            <div className="flex items-center justify-center">
-              <span className="text-xl font-semibold flex items-center gap-1">
-                <div className="w-4 h-4 bg-foreground rounded-sm" />
-                Soylent
-              </span>
+            <div className="flex items-center justify-center border border-border/40 py-2.5 bg-card hover:text-primary transition-colors">
+              <span>[ SOYLENT_NET ]</span>
             </div>
-            <div className="flex items-center justify-center">
-              <span className="text-xl font-bold tracking-widest">INITECH</span>
+            <div className="flex items-center justify-center border border-border/40 py-2.5 bg-card hover:text-primary transition-colors">
+              <span>[ INITECH_DEV ]</span>
             </div>
           </div>
         </motion.div>

@@ -27,7 +27,12 @@ export function logWarn(message: string, context?: Record<string, unknown>) {
 
 export function logError(error: unknown, context?: Record<string, unknown>) {
   const errorMessage = error instanceof Error ? error.message : String(error);
-  const errorStack = error instanceof Error ? error.stack : undefined;
+  const errorStack =
+    process.env.NODE_ENV === "production"
+      ? undefined
+      : error instanceof Error
+        ? error.stack
+        : undefined;
   
   console.error(
     `${prefix} ${formatMessage("ERROR", errorMessage, {

@@ -6,9 +6,7 @@ import { Activity } from "lucide-react";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 
 interface RealtimeCardProps {
@@ -30,12 +28,20 @@ export function RealtimeCard({
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+  const [windowSeconds, setWindowSeconds] = useState(30);
 
   useEffect(() => {
     let isMounted = true;
-    const controller = new AbortController();
+    let isInFlight = false;
+    let activeController: AbortController | null = null;
 
     async function fetchRealtime(isInitialLoad = false) {
+      if (isInFlight) return;
+
+      isInFlight = true;
+      activeController = new AbortController();
+
       if (isInitialLoad) {
         setIsLoading(true);
       } else {
@@ -44,7 +50,7 @@ export function RealtimeCard({
 
       try {
         const res = await fetch(`/api/realtime/${websiteId}`, {
-          signal: controller.signal,
+          signal: activeController.signal,
           cache: "no-store",
         });
 
@@ -57,6 +63,8 @@ export function RealtimeCard({
         if (!isMounted) return;
 
         setActiveVisitors(data.activeVisitors);
+        setWindowSeconds(data.windowSeconds);
+        setLastUpdated(data.polledAt);
         setError(null);
       } catch (error) {
         if (
@@ -69,6 +77,8 @@ export function RealtimeCard({
 
         setError("Realtime data is temporarily unavailable");
       } finally {
+        isInFlight = false;
+
         if (!isMounted) return;
 
         setIsLoading(false);
@@ -85,50 +95,66 @@ export function RealtimeCard({
 
     return () => {
       isMounted = false;
-      controller.abort();
+      activeController?.abort();
       clearInterval(interval);
     };
   }, [websiteId]);
 
   return (
-    <Card className="relative">
-      <CardHeader>
+    <Card className="relative hover:border-primary/50 transition-colors duration-200">
+      {/* Corner indicators for telemetry look */}
+      <div className="absolute top-0 left-0 w-[1px] h-[1px] bg-primary" />
+      <div className="absolute top-0 right-0 w-[1px] h-[1px] bg-primary" />
+      <div className="absolute bottom-0 left-0 w-[1px] h-[1px] bg-primary" />
+      <div className="absolute bottom-0 right-0 w-[1px] h-[1px] bg-primary" />
+
+      <CardHeader className="pb-1">
         <div className="flex items-start justify-between gap-3">
           <div className="space-y-1">
-            <CardTitle>Active Visitors</CardTitle>
-            <CardDescription>Last 30 seconds</CardDescription>
+            <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">
+              {"// Active Visitors"}
+            </span>
+            <span className="font-mono text-[9px] text-muted-foreground/40 uppercase block">
+              window: {windowSeconds}s
+            </span>
           </div>
 
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+          <div className="flex h-7 w-7 items-center justify-center border border-primary/20 bg-primary/5 text-primary">
             <Activity className="h-4 w-4" aria-hidden="true" />
           </div>
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 pb-4">
         <div className="flex items-end justify-between gap-4">
-          <p className="text-5xl font-semibold tracking-normal">
+          <p className="text-3xl font-mono font-bold tracking-tight text-white">
             {isLoading ? "--" : activeVisitors.toLocaleString()}
           </p>
 
-          <div className="mb-2 flex items-center gap-2 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+          <div className="mb-1.5 flex items-center gap-2 font-mono text-[9px] text-emerald-400 bg-emerald-500/5 border border-emerald-500/20 px-2 py-0.5 uppercase tracking-wider">
             <span
-              className="relative flex h-2.5 w-2.5"
+              className="relative flex h-1.5 w-1.5"
               aria-hidden="true"
             >
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-none bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-none bg-emerald-500" />
             </span>
-            Live
+            LIVE
           </div>
         </div>
 
-        <div className="min-h-5 text-xs text-muted-foreground">
+        <div className="min-h-4 font-mono text-[9px] text-muted-foreground/40 uppercase tracking-wide">
           {error
-            ? error
+            ? `// ERR: ${error}`
             : isRefreshing
-              ? "Refreshing..."
-              : "Updates every 10 seconds"}
+              ? "// REFRESHING_STREAM..."
+              : lastUpdated
+                ? `// SYNC_OK: ${new Date(lastUpdated).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                  })}`
+                : "// LISTENING_PORT"}
         </div>
       </CardContent>
     </Card>

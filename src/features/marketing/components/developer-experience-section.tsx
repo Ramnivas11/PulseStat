@@ -19,20 +19,22 @@ export function DeveloperExperienceSection() {
   };
 
   return (
-    <section className="py-24 md:py-32">
-      <div className="container mx-auto px-4 md:px-6 max-w-6xl">
+    <section className="py-24 md:py-32 bg-black">
+      <div className="container mx-auto px-6 max-w-6xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <motion.div 
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -15 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="space-y-6"
           >
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
+            <h2 className="text-3xl md:text-5xl font-heading font-black tracking-tight text-white uppercase leading-tight">
               A developer experience you&apos;ll actually enjoy
             </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              We know you hate bloating your codebase. That&apos;s why our tracker is engineered to be completely invisible to your users. It loads async, relies on <code className="bg-muted px-1.5 py-0.5 rounded text-sm">sendBeacon</code> for zero-impact transmission, and fully supports modern Single Page Applications out of the box.
+            <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground leading-relaxed">
+              {"// We know you hate bloating your codebase. That's why our tracker is engineered to be completely invisible to your users. It loads async, relies on "}
+              <code className="bg-muted px-1.5 py-0.5 border border-border text-[10px]">sendBeacon</code>
+              {" for zero-impact transmission, and fully supports modern Single Page Applications."}
             </p>
             
             <ul className="space-y-4 pt-4">
@@ -43,37 +45,37 @@ export function DeveloperExperienceSection() {
                 "Typescript ready"
               ].map((item, i) => (
                 <li key={i} className="flex items-center gap-3">
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-primary shrink-0">
-                    <Check className="h-4 w-4" />
+                  <div className="flex h-5 w-5 items-center justify-center border border-primary bg-primary/5 text-primary shrink-0">
+                    <Check className="h-3.5 w-3.5" />
                   </div>
-                  <span className="font-medium">{item}</span>
+                  <span className="font-mono text-xs uppercase text-muted-foreground">{item}</span>
                 </li>
               ))}
             </ul>
           </motion.div>
 
           <motion.div 
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 15 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="rounded-xl border bg-[#0d1117] text-gray-300 shadow-2xl overflow-hidden"
+            className="rounded-none border border-border bg-card shadow-none overflow-hidden"
           >
-            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800 bg-[#161b22]">
-              <div className="flex space-x-2">
-                <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                <div className="w-3 h-3 rounded-full bg-amber-500/80" />
-                <div className="w-3 h-3 rounded-full bg-green-500/80" />
+            <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/20">
+              <div className="flex space-x-1.5">
+                <div className="w-2.5 h-2.5 border border-border bg-neutral-800" />
+                <div className="w-2.5 h-2.5 border border-border bg-neutral-800" />
+                <div className="w-2.5 h-2.5 border border-border bg-neutral-800" />
               </div>
-              <span className="text-xs font-mono text-gray-500">app/layout.tsx</span>
+              <span className="text-[10px] font-mono text-muted-foreground uppercase">app/layout.tsx</span>
             </div>
             
-            <div className="p-6 relative font-mono text-sm leading-relaxed overflow-x-auto">
+            <div className="p-6 relative font-mono text-[11px] leading-relaxed overflow-x-auto bg-black/50 text-white">
               <pre>
-                <code className="text-purple-400">export default</code> <code className="text-blue-400">function</code> <code className="text-yellow-300">RootLayout</code>({`{`} children {`}`} : ... ) {`{\n`}
-                {`  `} <code className="text-blue-400">return</code> {`(\n`}
+                <code className="text-primary/70">export default</code> <code className="text-white/60">function</code> <code className="text-white">RootLayout</code>({`{`} children {`}`} : ... ) {`{\n`}
+                {`  `} <code className="text-white/60">return</code> {`(\n`}
                 {`    <html lang="en">\n`}
                 {`      <head>\n`}
-                <span className="bg-blue-500/10 px-2 rounded -ml-2 border-l-2 border-blue-500 block py-1">
+                <span className="bg-primary/5 px-2 -ml-2 border-l border-primary block py-1.5">
                   {`        <!-- PulseStat Tracker -->\n`}
                   {`        <script\n`}
                   {`          async\n`}
@@ -92,9 +94,9 @@ export function DeveloperExperienceSection() {
                 onClick={copyToClipboard}
                 size="icon" 
                 variant="outline" 
-                className="absolute top-4 right-4 bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700 hover:text-white"
+                className="absolute top-4 right-4 bg-card border-border hover:border-primary text-muted-foreground hover:text-white rounded-none size-7"
               >
-                {copied ? <Check className="h-4 w-4 text-green-400" /> : <Copy className="h-4 w-4" />}
+                {copied ? <Check className="h-3.5 w-3.5 text-primary" /> : <Copy className="h-3.5 w-3.5" />}
               </Button>
             </div>
           </motion.div>

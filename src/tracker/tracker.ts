@@ -10,16 +10,16 @@ interface TrackingPayload {
   userAgent: string;
   language: string;
   timezone: string;
-  screen: {
-    width: number;
-    height: number;
-  };
+  screenWidth: number;
+  screenHeight: number;
   country: string;
   timestamp: string;
+  lastActiveAt: string;
 }
 
 class PulseStatTracker {
   private siteId: string | null = null;
+  private endpointOrigin: string = "https://pulsestat.ramnivas.in";
   private visitorId!: string;
   private sessionId!: string;
   private lastTrackedPath: string = '';
@@ -35,6 +35,9 @@ class PulseStatTracker {
     // Get site ID from script attribute
     const currentScript = document.currentScript as HTMLScriptElement;
     this.siteId = currentScript?.getAttribute("data-site-id");
+    this.endpointOrigin = currentScript?.src
+      ? new URL(currentScript.src).origin
+      : this.endpointOrigin;
 
     // Visitor ID - persists across sessions
     this.visitorId = localStorage.getItem("pulsestat_visitor_id") || '';
@@ -61,18 +64,17 @@ class PulseStatTracker {
       userAgent: navigator.userAgent,
       language: navigator.language,
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
-      screen: {
-        width: window.screen.width,
-        height: window.screen.height,
-      },
+      screenWidth: window.screen.width,
+      screenHeight: window.screen.height,
       country: "Unknown",
       timestamp: new Date().toISOString(),
+      lastActiveAt: new Date().toISOString(),
     };
   }
 
   private sendTrackingData(payload: TrackingPayload): void {
     try {
-      const endpoint = new URL("/api/track", window.location.origin).toString();
+      const endpoint = new URL("/api/track", this.endpointOrigin).toString();
       const blob = new Blob([JSON.stringify(payload)], { type: "text/plain" });
       navigator.sendBeacon(endpoint, blob);
     } catch (error) {

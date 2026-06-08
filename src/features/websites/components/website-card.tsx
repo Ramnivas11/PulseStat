@@ -38,7 +38,7 @@ export function WebsiteCard({
         setTimeout(() => setCopiedScript(false), 2000);
         toast.success("Tracking script copied to clipboard");
       }
-    } catch (_err) {
+    } catch {
       toast.error("Failed to copy to clipboard");
     }
   };
