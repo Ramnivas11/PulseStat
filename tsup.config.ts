@@ -9,7 +9,7 @@ export default defineConfig({
 
   bundle: true,
 
-  outDir: "dist",
+  outDir: "public",
 
   outExtension() {
     return {

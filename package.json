@@ -9,7 +9,7 @@
     "lint": "eslint",
     "test": "tsx --test tests/**/*.test.ts",
     "smoke": "tsx scripts/smoke.ts",
-    "build:tracker": "tsup && node scripts/wrap-tracker.js",
+    "build:tracker": "tsup",
     "postinstall": "prisma generate"
   },
   "prisma": {
