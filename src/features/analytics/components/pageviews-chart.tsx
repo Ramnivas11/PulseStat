@@ -22,7 +22,7 @@ export function PageViewsChart({ data }: PageViewsChartProps) {
     return (
       <Card>
         <CardHeader>
-          <div className="font-heading text-base font-semibold tracking-tight text-white">Traffic Trend</div>
+          <div className="font-heading text-base font-semibold tracking-tight text-foreground">Traffic Trend</div>
         </CardHeader>
 
         <CardContent>
@@ -39,7 +39,7 @@ export function PageViewsChart({ data }: PageViewsChartProps) {
       <CardHeader className="border-b border-border bg-muted/10 pb-4">
         <div className="flex flex-col">
           <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">{"// traffic analytics"}</span>
-          <span className="font-heading text-base font-semibold tracking-tight text-white block">Traffic Trend</span>
+          <span className="font-heading text-base font-semibold tracking-tight text-foreground block">Traffic Trend</span>
         </div>
       </CardHeader>
 
@@ -64,11 +64,11 @@ export function PageViewsChart({ data }: PageViewsChartProps) {
                 contentStyle={{ 
                   backgroundColor: "var(--card)", 
                   borderColor: "var(--border)",
-                  borderRadius: "0px",
+                  borderRadius: "var(--radius)",
                   boxShadow: "none",
                   fontFamily: "var(--font-mono)",
                   fontSize: "11px",
-                  color: "#fff"
+                  color: "var(--foreground)"
                 }}
               />
               <Line

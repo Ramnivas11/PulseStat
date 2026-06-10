@@ -14,9 +14,9 @@ export async function GET() {
 
     // Ensure BigInts are converted before sending
     return safeJsonResponse({ ok: true, data: deepSerialize(usage) });
-  } catch (err: any) {
+  } catch (err) {
     // Log server-side safely
-    console.error("/api/usage error:", err?.message ?? err);
+    console.error("/api/usage error:", err instanceof Error ? err.message : String(err));
     return safeJsonResponse({ error: "Internal server error" }, 500);
   }
 }

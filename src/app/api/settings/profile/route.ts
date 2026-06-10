@@ -15,8 +15,8 @@ export async function GET() {
     if (!user) return safeJsonResponse({ error: "User not found" }, 404);
 
     return safeJsonResponse({ ok: true, data: user });
-  } catch (err: any) {
-    console.error("/api/settings/profile GET error:", err?.message ?? err);
+  } catch (err) {
+    console.error("/api/settings/profile GET error:", err instanceof Error ? err.message : String(err));
     return safeJsonResponse({ error: "Internal server error" }, 500);
   }
 }
@@ -27,7 +27,7 @@ export async function PATCH(req: Request) {
     if (!session?.user?.id) return safeJsonResponse({ error: "Unauthorized" }, 401);
 
     const body = await req.json().catch(() => ({}));
-    const updates: any = {};
+    const updates: { name?: string; email?: string } = {};
     if (typeof body.name === "string") updates.name = body.name;
     if (typeof body.email === "string") updates.email = body.email;
 
@@ -42,8 +42,8 @@ export async function PATCH(req: Request) {
     });
 
     return safeJsonResponse({ ok: true, data: user });
-  } catch (err: any) {
-    console.error("/api/settings/profile PATCH error:", err?.message ?? err);
+  } catch (err) {
+    console.error("/api/settings/profile PATCH error:", err instanceof Error ? err.message : String(err));
     return safeJsonResponse({ error: "Internal server error" }, 500);
   }
 }

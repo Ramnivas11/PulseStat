@@ -22,7 +22,7 @@ export function Navbar() {
   const userInitials = session?.user?.name?.slice(0, 2).toUpperCase() || "PS";
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-black/95 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur-md">
       <div className="container flex h-16 items-center justify-between px-4 md:px-6 max-w-7xl mx-auto">
         <div className="flex items-center gap-4">
           <Sheet>
@@ -32,14 +32,14 @@ export function Navbar() {
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="p-0 w-72 bg-black border-r border-border rounded-none">
+            <SheetContent side="left" className="p-0 w-72 bg-card border-r border-border rounded-none">
               <Sidebar />
             </SheetContent>
           </Sheet>
           
           <Link href="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-85">
             <BarChart3 className="h-5 w-5 text-primary" />
-            <span className="text-lg font-heading font-bold tracking-tight text-white">
+            <span className="text-lg font-heading font-bold tracking-tight text-foreground">
               PulseStat
             </span>
           </Link>

@@ -40,14 +40,14 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="h-full flex flex-col bg-black border-r border-border">
+    <aside className="h-full flex flex-col bg-card border-r border-border">
       <div className="p-6">
         <Link href="/" className="flex items-center gap-2.5 transition-transform hover:scale-[1.01]">
           <div className="bg-primary/10 border border-primary/30 p-1.5 text-primary">
             <BarChart3 className="h-5 w-5" />
           </div>
           <div className="flex flex-col">
-            <h2 className="text-lg font-heading font-bold tracking-tight text-white">
+            <h2 className="text-lg font-heading font-bold tracking-tight text-foreground">
               PulseStat
             </h2>
             <span className="font-mono text-[9px] tracking-widest text-muted-foreground">

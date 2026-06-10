@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable react-hooks/set-state-in-effect */
 
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";

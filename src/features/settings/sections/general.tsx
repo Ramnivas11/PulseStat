@@ -54,7 +54,7 @@ export default function GeneralSection() {
       <CardHeader className="border-b border-border bg-muted/10 pb-4">
         <div className="flex flex-col">
           <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">{"// general settings"}</span>
-          <span className="font-heading text-base font-semibold tracking-tight text-white block">Account Details</span>
+          <span className="font-heading text-base font-semibold tracking-tight text-foreground block">Account Details</span>
         </div>
       </CardHeader>
       <CardContent className="pt-6">
@@ -65,7 +65,7 @@ export default function GeneralSection() {
               <div>
                 {!editing ? (
                   <>
-                    <div className="text-sm font-semibold text-white">{user?.name ?? "Unknown"}</div>
+                    <div className="text-sm font-semibold text-foreground">{user?.name ?? "Unknown"}</div>
                     <div className="font-mono text-xs text-muted-foreground">{user?.email ?? "-"}</div>
                   </>
                 ) : (
@@ -81,7 +81,7 @@ export default function GeneralSection() {
 
           <div>
             <div className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{"// Account created"}</div>
-            <div className="mt-1.5 font-mono text-xs text-white">{user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : "-"}</div>
+            <div className="mt-1.5 font-mono text-xs text-foreground">{user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : "-"}</div>
           </div>
 
           <div className="flex space-x-2 pt-2">

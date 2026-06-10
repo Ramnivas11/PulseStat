@@ -43,14 +43,14 @@ export default function PreferencesSection() {
       <CardHeader className="border-b border-border bg-muted/10 pb-4">
         <div className="flex flex-col">
           <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">{"// system settings"}</span>
-          <span className="font-heading text-base font-semibold tracking-tight text-white block">Preferences</span>
+          <span className="font-heading text-base font-semibold tracking-tight text-foreground block">Preferences</span>
         </div>
       </CardHeader>
       <CardContent className="pt-6">
         <div className="space-y-6">
           <div className="flex items-center justify-between border-b border-border/40 pb-4">
             <div>
-              <div className="font-mono text-xs uppercase text-white font-bold mb-1">Dark Mode</div>
+              <div className="font-mono text-xs uppercase text-foreground font-bold mb-1">Dark Mode</div>
               <div className="font-mono text-[10px] text-muted-foreground uppercase">{"// Force dark theme environment."}</div>
             </div>
             <input 
@@ -63,7 +63,7 @@ export default function PreferencesSection() {
 
           <div className="flex items-center justify-between border-b border-border/40 pb-4">
             <div>
-              <div className="font-mono text-xs uppercase text-white font-bold mb-1">Compact Mode</div>
+              <div className="font-mono text-xs uppercase text-foreground font-bold mb-1">Compact Mode</div>
               <div className="font-mono text-[10px] text-muted-foreground uppercase">{"// Reduce table cell padding."}</div>
             </div>
             <input 

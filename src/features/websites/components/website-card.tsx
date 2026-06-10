@@ -44,8 +44,8 @@ export function WebsiteCard({
   };
 
   return (
-    <Card className="flex flex-col glass border-white/20 shadow-xl transition-all hover:shadow-blue-500/10">
-      <CardHeader className="border-b bg-muted/30">
+    <Card className="flex flex-col bg-card border border-border hover:border-primary/50 transition-all duration-200">
+      <CardHeader className="border-b border-border bg-muted/10 pb-4">
         <CardTitle className="text-xl font-black tracking-tight">{name}</CardTitle>
       </CardHeader>
 

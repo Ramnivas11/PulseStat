@@ -160,7 +160,7 @@ export default function SignupPage() {
                               <div className="relative group">
                                 <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground/50 group-focus-within:text-primary transition-colors" aria-hidden="true" />
                                 <Input
-                                  placeholder="John Doe…"
+                                  placeholder="Ram…"
                                   autoComplete="name"
                                   className="h-14 pl-12 bg-white/50 dark:bg-black/20 backdrop-blur-sm focus:ring-primary/50 transition-all border-black/10 dark:border-white/10 rounded-xl"
                                   {...field}

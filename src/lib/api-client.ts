@@ -13,22 +13,24 @@ export async function apiGet<T = unknown>(url: string, opts?: RequestInit): Prom
       return { ok: true, data: undefined as unknown as T };
     }
 
-    let json: any;
+    let json: unknown;
     try {
       json = JSON.parse(text);
-    } catch (e) {
+    } catch {
       // response may already be a serialized JSON string
       return { ok: false, error: 'Invalid JSON response from server', status: res.status };
     }
 
     if (!res.ok) {
-      const message = (json && (json.error || json.message)) || res.statusText || 'API Error';
+      const message = (json && typeof json === "object" && ("error" in json || "message" in json)
+        ? (json as Record<string, unknown>).error || (json as Record<string, unknown>).message
+        : null) || res.statusText || 'API Error';
       return { ok: false, error: String(message), status: res.status };
     }
 
     return { ok: true, data: json as T };
-  } catch (err: any) {
-    return { ok: false, error: err?.message ?? String(err) };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : String(err) };
   }
 }
 
@@ -47,21 +49,23 @@ export async function apiPost<T = unknown>(url: string, body?: unknown, opts?: R
       return { ok: true, data: undefined as unknown as T };
     }
 
-    let json: any;
+    let json: unknown;
     try {
       json = JSON.parse(text);
-    } catch (e) {
+    } catch {
       return { ok: false, error: 'Invalid JSON response from server', status: res.status };
     }
 
     if (!res.ok) {
-      const message = (json && (json.error || json.message)) || res.statusText || 'API Error';
+      const message = (json && typeof json === "object" && ("error" in json || "message" in json)
+        ? (json as Record<string, unknown>).error || (json as Record<string, unknown>).message
+        : null) || res.statusText || 'API Error';
       return { ok: false, error: String(message), status: res.status };
     }
 
     return { ok: true, data: json as T };
-  } catch (err: any) {
-    return { ok: false, error: err?.message ?? String(err) };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : String(err) };
   }
 }
 
@@ -80,21 +84,23 @@ export async function apiPatch<T = unknown>(url: string, body?: unknown, opts?: 
       return { ok: true, data: undefined as unknown as T };
     }
 
-    let json: any;
+    let json: unknown;
     try {
       json = JSON.parse(text);
-    } catch (e) {
+    } catch {
       return { ok: false, error: 'Invalid JSON response from server', status: res.status };
     }
 
     if (!res.ok) {
-      const message = (json && (json.error || json.message)) || res.statusText || 'API Error';
+      const message = (json && typeof json === "object" && ("error" in json || "message" in json)
+        ? (json as Record<string, unknown>).error || (json as Record<string, unknown>).message
+        : null) || res.statusText || 'API Error';
       return { ok: false, error: String(message), status: res.status };
     }
 
     return { ok: true, data: json as T };
-  } catch (err: any) {
-    return { ok: false, error: err?.message ?? String(err) };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : String(err) };
   }
 }
 

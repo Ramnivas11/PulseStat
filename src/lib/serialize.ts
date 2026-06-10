@@ -16,9 +16,9 @@ function convertBigInt(value: bigint): number | string {
 }
 
 export function deepSerialize<T>(input: T): unknown {
-  const seen = new WeakSet();
+  const seen = new WeakSet<object>();
 
-  function recurse(value: any): any {
+  function recurse(value: unknown): unknown {
     if (value === null || value === undefined) return value;
 
     if (typeof value === "bigint") return convertBigInt(value as bigint);
@@ -26,10 +26,10 @@ export function deepSerialize<T>(input: T): unknown {
     if (value instanceof Date) return value.toISOString();
     if (Array.isArray(value)) return value.map(recurse);
     if (typeof value === "object") {
-      if (seen.has(value)) return undefined; // break cycles
-      seen.add(value);
-      const out: Record<string, any> = {};
-      for (const [k, v] of Object.entries(value)) {
+      if (seen.has(value as object)) return undefined; // break cycles
+      seen.add(value as object);
+      const out: Record<string, unknown> = {};
+      for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
         out[k] = recurse(v);
       }
       return out;
@@ -38,7 +38,7 @@ export function deepSerialize<T>(input: T): unknown {
     // Fallback: stringify unknown types
     try {
       return String(value);
-    } catch (e) {
+    } catch {
       return undefined;
     }
   }

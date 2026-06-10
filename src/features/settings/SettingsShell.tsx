@@ -29,7 +29,7 @@ export default function SettingsShell() {
           <Card className="relative hover:border-primary/50 transition-colors duration-200">
             <CardHeader className="border-b border-border bg-muted/10 pb-4">
               <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">{"// user_profile"}</span>
-              <span className="font-heading text-base font-semibold tracking-tight text-white block">Settings</span>
+              <span className="font-heading text-base font-semibold tracking-tight text-foreground block">Settings</span>
             </CardHeader>
             <CardContent className="pt-4">
               <nav className="flex w-full flex-col space-y-1">

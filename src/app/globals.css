@@ -45,13 +45,13 @@ body {
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: 0px;
-  --radius-md: 0px;
-  --radius-lg: 0px;
-  --radius-xl: 0px;
-  --radius-2xl: 0px;
-  --radius-3xl: 0px;
-  --radius-4xl: 0px;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 16px);
+  --radius-4xl: calc(var(--radius) + 24px);
 }
 
 :root {
@@ -60,73 +60,73 @@ body {
   --font-geist: var(--font-geist), system-ui, sans-serif;
   --font-jetbrains: "JetBrains Mono", monospace;
 
-  /* Kinetic Noir - Dark mode as primary */
-  --background: #000000;
-  --foreground: #ffffff;
-  --card: #131313;
-  --card-foreground: #ffffff;
-  --popover: #131313;
-  --popover-foreground: #ffffff;
-  --primary: #6366f1;
+  /* Premium Light Mode */
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #4f46e5;
   --primary-foreground: #ffffff;
-  --secondary: #8b5cf6;
-  --secondary-foreground: #ffffff;
-  --muted: #1b1b1b;
-  --muted-foreground: #cfcfcf;
-  --accent: #6366f1;
-  --accent-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172a;
+  --muted: #f8fafc;
+  --muted-foreground: #64748b;
+  --accent: #f1f5f9;
+  --accent-foreground: #0f172a;
   --destructive: #ef4444;
-  --border: #262626;
-  --input: #131313;
-  --ring: #6366f1;
-  --chart-1: #6366f1;
-  --chart-2: #8b5cf6;
-  --chart-3: #a855f7;
-  --chart-4: #d946ef;
-  --chart-5: #ec4899;
-  --radius: 0px;
-  --sidebar: #131313;
-  --sidebar-foreground: #ffffff;
-  --sidebar-primary: #6366f1;
+  --border: #e2e8f0;
+  --input: #f1f5f9;
+  --ring: #4f46e5;
+  --chart-1: #4f46e5;
+  --chart-2: #7c3aed;
+  --chart-3: #2563eb;
+  --chart-4: #db2777;
+  --chart-5: #ea580c;
+  --radius: 0.6rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0f172a;
+  --sidebar-primary: #4f46e5;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1b1b1b;
-  --sidebar-accent-foreground: #6366f1;
-  --sidebar-border: #262626;
-  --sidebar-ring: #6366f1;
+  --sidebar-accent: #f1f5f9;
+  --sidebar-accent-foreground: #4f46e5;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #4f46e5;
 }
 
 .dark {
-  /* Override dark mode (matches root for dark-first approach) */
-  --background: #000000;
-  --foreground: #ffffff;
-  --card: #131313;
-  --card-foreground: #ffffff;
-  --popover: #131313;
-  --popover-foreground: #ffffff;
+  /* Premium Dark Mode */
+  --background: #030712;
+  --foreground: #f9fafb;
+  --card: #0b0f19;
+  --card-foreground: #f9fafb;
+  --popover: #0b0f19;
+  --popover-foreground: #f9fafb;
   --primary: #6366f1;
   --primary-foreground: #ffffff;
-  --secondary: #8b5cf6;
-  --secondary-foreground: #ffffff;
-  --muted: #1b1b1b;
-  --muted-foreground: #cfcfcf;
-  --accent: #6366f1;
-  --accent-foreground: #ffffff;
+  --secondary: #1f2937;
+  --secondary-foreground: #f9fafb;
+  --muted: #111827;
+  --muted-foreground: #9ca3af;
+  --accent: #1f2937;
+  --accent-foreground: #f9fafb;
   --destructive: #ef4444;
-  --border: #262626;
-  --input: #131313;
+  --border: #1f2937;
+  --input: #111827;
   --ring: #6366f1;
   --chart-1: #6366f1;
   --chart-2: #8b5cf6;
-  --chart-3: #a855f7;
-  --chart-4: #d946ef;
-  --chart-5: #ec4899;
-  --sidebar: #131313;
-  --sidebar-foreground: #ffffff;
+  --chart-3: #3b82f6;
+  --chart-4: #ec4899;
+  --chart-5: #f97316;
+  --sidebar: #0b0f19;
+  --sidebar-foreground: #f9fafb;
   --sidebar-primary: #6366f1;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1b1b1b;
+  --sidebar-accent: #1f2937;
   --sidebar-accent-foreground: #6366f1;
-  --sidebar-border: #262626;
+  --sidebar-border: #1f2937;
   --sidebar-ring: #6366f1;
 }
 
@@ -190,7 +190,7 @@ body {
   
   /* Telemetry emphasis */
   .metric-value {
-    @apply font-mono text-lg font-bold text-white;
+    @apply font-mono text-lg font-bold text-foreground;
   }
   
   /* Sharp focus rings */

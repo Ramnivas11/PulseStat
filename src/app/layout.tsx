@@ -77,7 +77,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${sora.variable} ${geist.variable} ${jetbrainsMono.variable} h-full antialiased dark`}
+      className={`${sora.variable} ${geist.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         {process.env.NEXT_PUBLIC_PULSESTAT_SITE_ID && (

@@ -158,7 +158,7 @@ export default async function DashboardPage(props: Props) {
                 <CardHeader className="border-b border-border bg-muted/10 pb-4">
                   <div className="flex flex-col">
                     <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">{"// breakdown"}</span>
-                    <span className="font-heading text-base font-semibold tracking-tight text-white block flex items-center gap-2">
+                    <span className="font-heading text-base font-semibold tracking-tight text-foreground block flex items-center gap-2">
                       <BarChart3 className="h-4 w-4 text-primary" />
                       Top Pages
                     </span>
@@ -181,7 +181,7 @@ export default async function DashboardPage(props: Props) {
                         <TableBody>
                           {topPages.map((page) => (
                             <TableRow key={page.path} className="hover:bg-muted/10 border-b border-border/40 transition-colors">
-                              <TableCell className="font-mono text-xs text-white max-w-[200px] truncate">{page.path}</TableCell>
+                              <TableCell className="font-mono text-xs text-foreground max-w-[200px] truncate">{page.path}</TableCell>
                               <TableCell className="text-right font-mono text-xs text-primary tabular-nums">
                                 {page.views.toLocaleString()}
                               </TableCell>
@@ -198,7 +198,7 @@ export default async function DashboardPage(props: Props) {
                 <CardHeader className="border-b border-border bg-muted/10 pb-4">
                   <div className="flex flex-col">
                     <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">{"// breakdown"}</span>
-                    <span className="font-heading text-base font-semibold tracking-tight text-white block">Browser Breakdown</span>
+                    <span className="font-heading text-base font-semibold tracking-tight text-foreground block">Browser Breakdown</span>
                   </div>
                 </CardHeader>
                 <CardContent className="pt-6">
@@ -228,7 +228,7 @@ export default async function DashboardPage(props: Props) {
                 <CardHeader className="border-b border-border bg-muted/10 pb-4">
                   <div className="flex flex-col">
                     <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">{"// breakdown"}</span>
-                    <span className="font-heading text-base font-semibold tracking-tight text-white block">Device Breakdown</span>
+                    <span className="font-heading text-base font-semibold tracking-tight text-foreground block">Device Breakdown</span>
                   </div>
                 </CardHeader>
                 <CardContent className="pt-6">

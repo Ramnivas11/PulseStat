@@ -19,7 +19,7 @@ export default function DangerZoneSection() {
       <CardContent className="pt-6">
         <div className="space-y-4">
           <div>
-            <h4 className="font-mono text-xs uppercase text-white font-bold mb-1">Delete account</h4>
+            <h4 className="font-mono text-xs uppercase text-foreground font-bold mb-1">Delete account</h4>
             <p className="font-mono text-[10px] text-muted-foreground uppercase leading-relaxed">{"// This action is irreversible. All websites, analytics databases, and profiles will be deleted."}</p>
             <div className="mt-4 flex items-center space-x-2 w-96">
               <Input placeholder="Type DELETE to confirm" value={confirm} onChange={(e) => setConfirm(e.target.value)} />

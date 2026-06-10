@@ -127,7 +127,7 @@ export function RealtimeCard({
 
       <CardContent className="space-y-4 pb-4">
         <div className="flex items-end justify-between gap-4">
-          <p className="text-3xl font-mono font-bold tracking-tight text-white">
+          <p className="text-3xl font-mono font-bold tracking-tight text-foreground">
             {isLoading ? "--" : activeVisitors.toLocaleString()}
           </p>
 

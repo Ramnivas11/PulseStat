@@ -28,7 +28,7 @@ export function StatsCard({
       </CardHeader>
 
       <CardContent className="pb-4">
-        <p className="text-3xl font-mono font-bold tracking-tight text-white">
+        <p className="text-3xl font-mono font-bold tracking-tight text-foreground">
           {value}
         </p>
       </CardContent>
