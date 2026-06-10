@@ -67,7 +67,8 @@ export async function POST(req: Request) {
       success: true,
       user,
     });
-  } catch {
+  } catch (error) {
+    console.error("SIGNUP_API_ERROR:", error);
     return Response.json(
       { error: "An unexpected error occurred during signup." },
       { status: 500 }

@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/shared/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "@/components/shared/providers";
 import { Footer } from "@/components/layout/footer";
+import Script from "next/script";
 
 const sora = Sora({
   variable: "--font-sora",
@@ -63,8 +64,6 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
   },
   manifest: "/site.webmanifest",
 };
@@ -82,10 +81,10 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         {process.env.NEXT_PUBLIC_PULSESTAT_SITE_ID && (
-          <script
-            async
+          <Script
             src="/tracker.js"
             data-site-id={process.env.NEXT_PUBLIC_PULSESTAT_SITE_ID}
+            strategy="afterInteractive"
           />
         )}
         <Providers>
