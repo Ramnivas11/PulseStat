@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { 
   Activity, 
@@ -57,7 +58,18 @@ export default function SignupPage() {
         toast.error("Signup failed. Please try again.");
       } else {
         toast.success("Account created successfully!");
-        router.push("/login");
+        const signInResult = await signIn("credentials", {
+          email: data.email,
+          password: data.password,
+          redirect: false,
+        });
+
+        if (signInResult?.error) {
+          toast.error("Auto-login failed. Please log in manually.");
+          router.push("/login");
+        } else {
+          router.push("/dashboard");
+        }
       }
     } catch {
       setError("An unexpected error occurred");
