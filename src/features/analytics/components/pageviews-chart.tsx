@@ -20,14 +20,16 @@ interface PageViewsChartProps {
 export function PageViewsChart({ data }: PageViewsChartProps) {
   if (data.length === 0) {
     return (
-      <Card>
-        <CardHeader>
-          <div className="font-heading text-base font-semibold tracking-tight text-foreground">Traffic Trend</div>
+      <Card className="relative rounded-none border-sharp bg-black">
+        <CardHeader className="border-b border-border bg-muted/5 pb-4">
+          <div className="flex flex-col">
+            <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase block">{"// traffic analytics"}</span>
+            <span className="font-heading text-sm font-bold tracking-wider text-white uppercase block mt-1">Traffic Trend</span>
+          </div>
         </CardHeader>
-
-        <CardContent>
-          <p className="text-sm text-muted-foreground">
-            No daily analytics are available yet.
+        <CardContent className="pt-6">
+          <p className="font-mono text-xs text-muted-foreground uppercase">
+            {"// No daily analytics are available yet."}
           </p>
         </CardContent>
       </Card>
@@ -35,11 +37,11 @@ export function PageViewsChart({ data }: PageViewsChartProps) {
   }
 
   return (
-    <Card className="relative">
-      <CardHeader className="border-b border-border bg-muted/10 pb-4">
+    <Card className="relative rounded-none border-sharp bg-black hover:border-primary/50 transition-colors duration-200">
+      <CardHeader className="border-b border-border bg-muted/5 pb-4">
         <div className="flex flex-col">
-          <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">{"// traffic analytics"}</span>
-          <span className="font-heading text-base font-semibold tracking-tight text-foreground block">Traffic Trend</span>
+          <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase block">{"// traffic analytics"}</span>
+          <span className="font-heading text-sm font-bold tracking-wider text-white uppercase block mt-1">Traffic Trend</span>
         </div>
       </CardHeader>
 
@@ -62,13 +64,17 @@ export function PageViewsChart({ data }: PageViewsChartProps) {
               />
               <Tooltip 
                 contentStyle={{ 
-                  backgroundColor: "var(--card)", 
+                  backgroundColor: "#000", 
                   borderColor: "var(--border)",
-                  borderRadius: "var(--radius)",
+                  borderRadius: "0px",
                   boxShadow: "none",
                   fontFamily: "var(--font-mono)",
                   fontSize: "11px",
-                  color: "var(--foreground)"
+                  color: "#fff",
+                  textTransform: "uppercase"
+                }}
+                itemStyle={{
+                  color: "#fff"
                 }}
               />
               <Line
@@ -76,7 +82,7 @@ export function PageViewsChart({ data }: PageViewsChartProps) {
                 dataKey="pageviews"
                 stroke="var(--primary)"
                 strokeWidth={2}
-                dot={{ r: 3, fill: "var(--primary)", strokeWidth: 1, stroke: "var(--background)" }}
+                dot={{ r: 3, fill: "var(--primary)", strokeWidth: 1, stroke: "#000" }}
                 activeDot={{ r: 5, strokeWidth: 0 }}
               />
             </LineChart>

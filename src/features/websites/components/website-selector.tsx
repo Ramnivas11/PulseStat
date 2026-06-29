@@ -31,7 +31,7 @@ export function WebsiteSelector({ websites }: WebsiteSelectorProps) {
 
   return (
     <Select value={currentSiteId} onValueChange={handleValueChange}>
-      <SelectTrigger className="w-[200px]">
+      <SelectTrigger className="w-[200px] rounded-none border-border bg-black font-mono text-[10px] uppercase tracking-widest text-white hover:border-primary/50 transition-colors h-10">
         <SelectValue placeholder="Select a website" />
       </SelectTrigger>
       <SelectContent>

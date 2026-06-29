@@ -11,22 +11,22 @@ interface UpgradePromptProps {
 
 export function UpgradePrompt({ title, description }: UpgradePromptProps) {
   return (
-    <Card className="border-amber-200 bg-amber-50/50 dark:border-amber-900/50 dark:bg-amber-950/20">
+    <Card className="rounded-none border border-primary/30 bg-primary/5">
       <CardContent className="flex flex-col items-center p-6 text-center sm:flex-row sm:text-left sm:p-8 gap-6">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-600 dark:bg-amber-900/50 dark:text-amber-500">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-none bg-primary/20 text-primary border border-primary/30">
           <AlertCircle className="h-6 w-6" />
         </div>
-        <div className="flex-1 space-y-1">
-          <h3 className="font-semibold text-amber-900 dark:text-amber-400">
+        <div className="flex-1 space-y-2">
+          <h3 className="font-heading font-black uppercase tracking-tight text-white">
             {title}
           </h3>
-          <p className="text-sm text-amber-700 dark:text-amber-500/80">
-            {description}
+          <p className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+            {"// " + description}
           </p>
         </div>
         <Link
           href="/billing"
-          className="inline-flex h-10 shrink-0 items-center justify-center rounded-md bg-amber-600 px-6 text-sm font-medium text-white transition-colors hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 dark:bg-amber-600 dark:hover:bg-amber-700"
+          className="inline-flex h-10 shrink-0 items-center justify-center rounded-none bg-primary px-6 text-xs font-mono uppercase tracking-wider font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus:outline-none focus:ring-1 focus:ring-primary focus:ring-offset-0"
         >
           Upgrade to Pro
         </Link>

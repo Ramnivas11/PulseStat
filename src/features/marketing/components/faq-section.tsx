@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import {
   Accordion,
   AccordionContent,
@@ -33,47 +32,31 @@ const faqs = [
 
 export function FaqSection() {
   return (
-    <section className="py-24 md:py-32 bg-black border-t border-border">
+    <section className="py-24 md:py-32 bg-transparent border-t border-border">
       <div className="container mx-auto px-6 max-w-3xl">
         <div className="text-center mb-12 md:mb-16">
-          <motion.h2 
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-3xl md:text-5xl font-heading font-black tracking-tight mb-4 uppercase text-white"
-          >
+          <h2 className="text-3xl md:text-5xl font-heading font-black tracking-tight mb-4  text-white">
             Faq Matrix
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-xs font-mono uppercase tracking-wider text-muted-foreground"
-          >
+          </h2>
+          <p className="text-xs font-mono   text-muted-foreground">
             {"// Core technical questions regarding the telemetry tracker."}
-          </motion.p>
+          </p>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-        >
+        <div>
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, index) => (
               <AccordionItem key={index} value={`item-${index}`} className="border-b border-border py-1">
-                <AccordionTrigger className="text-left font-mono text-[11px] uppercase tracking-wider hover:no-underline hover:text-primary transition-colors py-4">
+                <AccordionTrigger className="text-left font-mono text-[11px]   hover:no-underline hover:text-foreground transition-colors py-4">
                   {`[0${index + 1}]`} {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-xs text-muted-foreground font-mono uppercase leading-relaxed pb-4">
+                <AccordionContent className="text-xs text-muted-foreground font-mono  leading-relaxed pb-4">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

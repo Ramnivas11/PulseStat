@@ -26,7 +26,7 @@ export default function SettingsShell() {
     <div className="container mx-auto px-4 py-6">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
         <aside className="lg:col-span-1">
-          <Card className="relative hover:border-primary/50 transition-colors duration-200">
+          <Card className="relative rounded-none border-sharp bg-black hover:border-primary/50 transition-colors duration-200">
             <CardHeader className="border-b border-border bg-muted/10 pb-4">
               <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">{"// user_profile"}</span>
               <span className="font-heading text-base font-semibold tracking-tight text-foreground block">Settings</span>
@@ -50,31 +50,15 @@ export default function SettingsShell() {
             </CardContent>
           </Card>
 
-          <div className="mt-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Usage</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <UsageOverview />
-              </CardContent>
-            </Card>
+          <div className="mt-6">
+            <UsageOverview />
           </div>
         </aside>
 
         <main className="lg:col-span-3">
           <div className="space-y-6">
             {tab === "general" && <GeneralSection />}
-            {tab === "usage" && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Usage & Analytics</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <UsageOverview />
-                </CardContent>
-              </Card>
-            )}
+            {tab === "usage" && <UsageOverview />}
             {tab === "security" && <SecuritySection />}
             {tab === "preferences" && <PreferencesSection />}
             {tab === "api" && <ApiTrackingSection />}

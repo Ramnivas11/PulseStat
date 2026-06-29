@@ -9,7 +9,7 @@ export default function DangerZoneSection() {
   const [confirm, setConfirm] = useState("");
 
   return (
-    <Card className="relative hover:border-destructive/40 transition-colors duration-200">
+    <Card className="relative rounded-none border-sharp bg-black hover:border-destructive/40 transition-colors duration-200">
       <CardHeader className="border-b border-border bg-destructive/5 pb-4">
         <div className="flex flex-col">
           <span className="font-mono text-[9px] tracking-widest text-destructive/80 uppercase block">{"// warning: irreversible operations"}</span>

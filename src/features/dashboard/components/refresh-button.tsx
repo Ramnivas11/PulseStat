@@ -24,6 +24,7 @@ export function RefreshButton() {
       onClick={handleRefresh}
       disabled={isRefreshing}
       title="Refresh Dashboard Data"
+      className="rounded-none border-border bg-black hover:bg-primary/10 hover:text-primary transition-colors h-10 w-10 hover:border-primary/50"
     >
       <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin text-primary" : "text-muted-foreground"}`} />
       <span className="sr-only">Refresh Dashboard Data</span>

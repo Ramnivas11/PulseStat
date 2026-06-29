@@ -12,17 +12,19 @@ export function EmptyState({
   action,
 }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-muted bg-card/30 p-12 text-center glass shadow-sm transition-all hover:border-primary/30">
+    <div className="flex flex-col items-center justify-center rounded-none border border-dashed border-border bg-black p-12 text-center transition-all hover:border-primary/50 relative overflow-hidden group">
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-border group-hover:bg-primary transition-colors"></div>
+      
       {icon && (
-        <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary shadow-inner">
+        <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-none bg-primary/10 text-primary border border-primary/20">
           {icon}
         </div>
       )}
-      <h3 className="text-2xl font-extrabold tracking-tight text-foreground">
+      <h3 className="text-xl font-heading font-black tracking-tight text-white uppercase mb-2">
         {title}
       </h3>
-      <p className="mt-3 text-base text-muted-foreground max-w-sm leading-relaxed">
-        {description}
+      <p className="mt-3 text-[10px] font-mono text-muted-foreground uppercase tracking-wider max-w-sm leading-relaxed">
+        {"// " + description}
       </p>
       {action && <div className="mt-8">{action}</div>}
     </div>

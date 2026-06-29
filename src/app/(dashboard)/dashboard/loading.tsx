@@ -12,7 +12,7 @@ export default function DashboardLoading() {
         />
       </div>
 
-      <Card>
+      <Card className="relative rounded-none border-sharp bg-black border-dashed border-border/50">
         <CardHeader className="pb-2">
           <Skeleton className="h-6 w-32" />
         </CardHeader>
@@ -24,7 +24,7 @@ export default function DashboardLoading() {
 
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
         {[1, 2, 3, 4].map((i) => (
-          <Card key={i}>
+          <Card key={i} className="relative rounded-none border-sharp bg-black border-dashed border-border/50">
             <CardHeader className="pb-2">
               <Skeleton className="h-4 w-24" />
             </CardHeader>
@@ -36,7 +36,7 @@ export default function DashboardLoading() {
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[2fr_1fr]">
-        <Card className="min-h-[300px]">
+        <Card className="min-h-[300px] relative rounded-none border-sharp bg-black border-dashed border-border/50">
           <CardHeader>
             <Skeleton className="h-6 w-32" />
           </CardHeader>
@@ -46,7 +46,7 @@ export default function DashboardLoading() {
         </Card>
 
         <div className="space-y-6">
-          <Card>
+          <Card className="relative rounded-none border-sharp bg-black border-dashed border-border/50">
             <CardHeader>
               <Skeleton className="h-6 w-32" />
             </CardHeader>

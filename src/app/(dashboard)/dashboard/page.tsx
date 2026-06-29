@@ -154,11 +154,11 @@ export default async function DashboardPage(props: Props) {
             <PageViewsChart data={dailyStats} />
 
             <div className="space-y-8">
-              <Card className="relative hover:border-primary/50 transition-colors">
-                <CardHeader className="border-b border-border bg-muted/10 pb-4">
+              <Card className="relative rounded-none border-sharp bg-black hover:border-primary/50 transition-colors duration-200">
+                <CardHeader className="border-b border-border bg-muted/5 pb-4">
                   <div className="flex flex-col">
-                    <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">{"// breakdown"}</span>
-                    <span className="font-heading text-base font-semibold tracking-tight text-foreground block flex items-center gap-2">
+                    <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase block">{"// breakdown"}</span>
+                    <span className="font-heading text-sm font-bold tracking-wider text-white uppercase block mt-1 flex items-center gap-2">
                       <BarChart3 className="h-4 w-4 text-primary" />
                       Top Pages
                     </span>
@@ -194,14 +194,14 @@ export default async function DashboardPage(props: Props) {
                 </CardContent>
               </Card>
 
-              <Card className="relative hover:border-primary/50 transition-colors">
-                <CardHeader className="border-b border-border bg-muted/10 pb-4">
+              <Card className="relative rounded-none border-sharp bg-black hover:border-primary/50 transition-colors duration-200">
+                <CardHeader className="border-b border-border bg-muted/5 pb-4">
                   <div className="flex flex-col">
-                    <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">{"// breakdown"}</span>
-                    <span className="font-heading text-base font-semibold tracking-tight text-foreground block">Browser Breakdown</span>
+                    <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase block">{"// breakdown"}</span>
+                    <span className="font-heading text-sm font-bold tracking-wider text-white uppercase block mt-1">Browser Breakdown</span>
                   </div>
                 </CardHeader>
-                <CardContent className="pt-6">
+                <CardContent className="pt-6 pl-6">
                   {browsers.length === 0 ? (
                     <p className="font-mono text-xs text-muted-foreground text-center py-4 uppercase">
                       {"// No browser analytics"}
@@ -224,14 +224,14 @@ export default async function DashboardPage(props: Props) {
                 </CardContent>
               </Card>
 
-              <Card className="relative hover:border-primary/50 transition-colors">
-                <CardHeader className="border-b border-border bg-muted/10 pb-4">
+              <Card className="relative rounded-none border-sharp bg-black hover:border-primary/50 transition-colors duration-200">
+                <CardHeader className="border-b border-border bg-muted/5 pb-4">
                   <div className="flex flex-col">
-                    <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">{"// breakdown"}</span>
-                    <span className="font-heading text-base font-semibold tracking-tight text-foreground block">Device Breakdown</span>
+                    <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase block">{"// breakdown"}</span>
+                    <span className="font-heading text-sm font-bold tracking-wider text-white uppercase block mt-1">Device Breakdown</span>
                   </div>
                 </CardHeader>
-                <CardContent className="pt-6">
+                <CardContent className="pt-6 pl-6">
                   {devices.length === 0 ? (
                     <p className="font-mono text-xs text-muted-foreground text-center py-4 uppercase">
                       {"// No device analytics"}

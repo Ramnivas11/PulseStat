@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export default function ApiTrackingSection() {
   return (
-    <Card className="relative hover:border-primary/50 transition-colors duration-200">
+    <Card className="relative rounded-none border-sharp bg-black hover:border-primary/50 transition-colors duration-200">
       <CardHeader className="border-b border-border bg-muted/10 pb-4">
         <div className="flex flex-col">
           <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">{"// api configuration"}</span>

@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -9,13 +8,13 @@ body {
   font-feature-settings: "rlig" 1, "calt" 1;
 }
 
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist);
-  --font-mono: var(--font-jetbrains);
-  --font-heading: var(--font-sora);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
+  --font-heading: var(--font-display);
+
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -24,11 +23,13 @@ body {
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar: var(--sidebar);
+
   --color-chart-5: var(--chart-5);
   --color-chart-4: var(--chart-4);
   --color-chart-3: var(--chart-3);
   --color-chart-2: var(--chart-2);
   --color-chart-1: var(--chart-1);
+
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -45,120 +46,153 @@ body {
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 16px);
-  --radius-4xl: calc(var(--radius) + 24px);
+
+  /* Sharp Geometry Scale */
+  --radius-sm: 0px;
+  --radius-md: 2px;
+  --radius-lg: 4px;
+  --radius-xl: 6px;
+  --radius-2xl: 8px;
+  --radius-3xl: 12px;
+  --radius-4xl: 16px;
+
+  /* Typography Scale */
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.1rem;
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.25rem;
+  --text-body: 1rem;
+  --text-body--line-height: 1.5rem;
+  --text-h3: 1.25rem;
+  --text-h3--line-height: 1.75rem;
+  --text-h2: 1.5rem;
+  --text-h2--line-height: 2rem;
+  --text-h1: 2.25rem;
+  --text-h1--line-height: 2.5rem;
+  --text-display: 3.5rem;
+  --text-display--line-height: 3.75rem;
+
+  /* Shadow Depth Scale */
+  --shadow-subtle: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-elevation: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-float: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
 :root {
-  /* Typography */
-  --font-sora: "Sora", system-ui, sans-serif;
-  --font-geist: var(--font-geist), system-ui, sans-serif;
-  --font-jetbrains: "JetBrains Mono", monospace;
+  /* Typography Variables */
+  --font-display: var(--font-playfair), Georgia, serif;
+  --font-body: var(--font-source-serif), Georgia, serif;
+  --font-mono: var(--font-jetbrains), monospace;
 
-  /* Premium Light Mode */
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-  --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  --primary: #4f46e5;
-  --primary-foreground: #ffffff;
-  --secondary: #f1f5f9;
-  --secondary-foreground: #0f172a;
-  --muted: #f8fafc;
-  --muted-foreground: #64748b;
-  --accent: #f1f5f9;
-  --accent-foreground: #0f172a;
-  --destructive: #ef4444;
-  --border: #e2e8f0;
-  --input: #f1f5f9;
-  --ring: #4f46e5;
-  --chart-1: #4f46e5;
-  --chart-2: #7c3aed;
-  --chart-3: #2563eb;
-  --chart-4: #db2777;
-  --chart-5: #ea580c;
-  --radius: 0.6rem;
-  --sidebar: #ffffff;
-  --sidebar-foreground: #0f172a;
-  --sidebar-primary: #4f46e5;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f1f5f9;
-  --sidebar-accent-foreground: #4f46e5;
-  --sidebar-border: #e2e8f0;
-  --sidebar-ring: #4f46e5;
+  /* Soft Gradient SaaS Light Mode */
+  --background: #FFFFFF;
+  --foreground: #111827;
+  --card: #FFFFFF;
+  --card-foreground: #111827;
+  --popover: #FFFFFF;
+  --popover-foreground: #111827;
+  --primary: #155EEF;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F7F8FA;
+  --secondary-foreground: #111827;
+  --muted: #F7F8FA;
+  --muted-foreground: #6B7280;
+  --accent: #155EEF;
+  --accent-foreground: #FFFFFF;
+  --destructive: #E5484D;
+  --destructive-foreground: #FFFFFF;
+  --border: #E5E7EB;
+  --input: #E5E7EB;
+  --ring: #155EEF;
+  --radius: 0.625rem;
+
+  --radius-marketing: 1.25rem;
+
+  /* Charts */
+  --chart-1: #155EEF;
+  --chart-2: #3B82F6;
+  --chart-3: #60A5FA;
+  --chart-4: #93C5FD;
+  --chart-5: #BFDBFE;
+
+  /* Sidebar */
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #111827;
+  --sidebar-primary: #155EEF;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #F7F8FA;
+  --sidebar-accent-foreground: #111827;
+  --sidebar-border: #E5E7EB;
+  --sidebar-ring: #155EEF;
 }
 
 .dark {
-  /* Premium Dark Mode */
-  --background: #030712;
-  --foreground: #f9fafb;
-  --card: #0b0f19;
-  --card-foreground: #f9fafb;
-  --popover: #0b0f19;
-  --popover-foreground: #f9fafb;
-  --primary: #6366f1;
-  --primary-foreground: #ffffff;
-  --secondary: #1f2937;
-  --secondary-foreground: #f9fafb;
-  --muted: #111827;
-  --muted-foreground: #9ca3af;
-  --accent: #1f2937;
-  --accent-foreground: #f9fafb;
-  --destructive: #ef4444;
-  --border: #1f2937;
-  --input: #111827;
-  --ring: #6366f1;
-  --chart-1: #6366f1;
-  --chart-2: #8b5cf6;
-  --chart-3: #3b82f6;
-  --chart-4: #ec4899;
-  --chart-5: #f97316;
-  --sidebar: #0b0f19;
-  --sidebar-foreground: #f9fafb;
-  --sidebar-primary: #6366f1;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1f2937;
-  --sidebar-accent-foreground: #6366f1;
-  --sidebar-border: #1f2937;
-  --sidebar-ring: #6366f1;
+  /* Soft Gradient SaaS Dark Mode */
+  --background: #0B0E14;
+  --foreground: #E8EAED;
+  --card: #11151D;
+  --card-foreground: #E8EAED;
+  --popover: #11151D;
+  --popover-foreground: #E8EAED;
+  --primary: #4C8DFF;
+  --primary-foreground: #0B0E14;
+  --secondary: #161B24;
+  --secondary-foreground: #E8EAED;
+  --muted: #161B24;
+  --muted-foreground: #8B93A1;
+  --accent: #4C8DFF;
+  --accent-foreground: #0B0E14;
+  --destructive: #FF6369;
+  --destructive-foreground: #0B0E14;
+  --border: #232A36;
+  --input: #232A36;
+  --ring: #4C8DFF;
+  --radius: 0.625rem;
+
+  /* Charts */
+  --chart-1: #4C8DFF;
+  --chart-2: #3B82F6;
+  --chart-3: #60A5FA;
+  --chart-4: #93C5FD;
+  --chart-5: #BFDBFE;
+
+  /* Sidebar */
+  --sidebar: #0B0E14;
+  --sidebar-foreground: #E8EAED;
+  --sidebar-primary: #4C8DFF;
+  --sidebar-primary-foreground: #0B0E14;
+  --sidebar-accent: #161B24;
+  --sidebar-accent-foreground: #E8EAED;
+  --sidebar-border: #232A36;
+  --sidebar-ring: #4C8DFF;
 }
 
 @layer utilities {
-  /* Kinetic Noir glass effect - sharp borders, no soft blur */
+
+  /* Soft glass effect */
   .glass {
-    @apply backdrop-blur-sm bg-black/40 border border-white/10;
+    @apply backdrop-blur-xl bg-background/60 border border-border/50 shadow-subtle;
   }
-  
-  /* Sharp borders for cards */
-  .border-sharp {
-    @apply border-1 border-border;
-  }
-  
-  /* Telemetry text styling - JetBrains Mono */
+
+
+  /* Telemetry text styling - JetBrains Mono (removed uppercase forcing) */
   .telemetry-label {
-    @apply font-mono text-xs font-medium tracking-wider text-muted-foreground uppercase;
+    @apply font-mono text-xs font-medium text-muted-foreground;
   }
-  
+
   /* Accent highlight for metrics */
   .accent-glow {
-    @apply text-accent;
+    @apply text-primary;
   }
-  
+
   /* Focus ring for premium feel */
   .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background focus:ring-ring;
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
   }
-  
+
   /* Smooth transitions */
   .transition-smooth {
-    @apply transition-all duration-200 ease-out;
+    @apply transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)];
   }
 }
 
@@ -166,35 +200,43 @@ body {
   * {
     @apply border-border;
   }
-  
+
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground font-sans antialiased selection:bg-primary/20 selection:text-primary;
   }
-  
+
+
   html {
     @apply font-sans;
   }
-  
+
   /* Typography Scale */
-  h1 {
-    @apply font-heading text-4xl font-bold tracking-tight;
+  h1,
+  .text-h1 {
+    @apply font-heading text-4xl sm:text-5xl font-semibold tracking-tight;
   }
-  
-  h2 {
-    @apply font-heading text-2xl font-semibold tracking-tight;
+
+  h2,
+  .text-h2 {
+    @apply font-heading text-3xl sm:text-4xl font-semibold tracking-tight;
   }
-  
-  h3 {
-    @apply font-heading text-lg font-semibold;
+
+  h3,
+  .text-h3 {
+    @apply font-heading text-2xl font-medium tracking-tight;
   }
-  
+
+  .text-display {
+    @apply font-heading text-5xl sm:text-7xl font-bold tracking-tighter;
+  }
+
   /* Telemetry emphasis */
   .metric-value {
-    @apply font-mono text-lg font-bold text-foreground;
+    @apply font-mono text-3xl font-semibold text-foreground tracking-tight;
   }
-  
-  /* Sharp focus rings */
+
+  /* Soft focus rings */
   :focus-visible {
-    @apply outline-none ring-2 ring-offset-2 ring-offset-background ring-accent;
+    @apply outline-none ring-2 ring-offset-2 ring-offset-background ring-primary;
   }
 }

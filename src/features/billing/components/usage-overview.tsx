@@ -36,13 +36,13 @@ export function UsageOverview() {
 
   if (isLoading) {
     return (
-      <Card className="relative">
-        <CardHeader className="border-b border-border bg-muted/10 pb-4">
-          <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">{"// resource validation"}</span>
-          <span className="font-heading text-base font-semibold tracking-tight text-foreground block">Usage Overview</span>
+      <Card className="relative rounded-none border-sharp bg-black">
+        <CardHeader className="border-b border-border bg-muted/5 pb-4">
+          <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase block">{"// resource validation"}</span>
+          <span className="font-heading text-sm font-bold tracking-wider text-white uppercase block mt-1">Usage Overview</span>
         </CardHeader>
         <CardContent className="pt-6">
-          <div className="h-[100px] animate-pulse bg-muted/30 border border-border" />
+          <div className="h-[100px] animate-pulse bg-muted/10 border border-border" />
         </CardContent>
       </Card>
     );
@@ -50,12 +50,12 @@ export function UsageOverview() {
 
   if (!usage) {
     return (
-      <Card className="relative">
-        <CardHeader className="border-b border-border bg-muted/10 pb-4">
-          <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">{"// resource validation"}</span>
-          <span className="font-heading text-base font-semibold tracking-tight text-foreground block">Usage Overview</span>
+      <Card className="relative rounded-none border-sharp bg-black">
+        <CardHeader className="border-b border-border bg-muted/5 pb-4">
+          <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase block">{"// resource validation"}</span>
+          <span className="font-heading text-sm font-bold tracking-wider text-white uppercase block mt-1">Usage Overview</span>
         </CardHeader>
-        <CardContent className="pt-6 font-mono text-xs text-muted-foreground uppercase">
+        <CardContent className="pt-6 font-mono text-xs text-destructive uppercase">
           {"// ERR: Unable to load usage metrics"}
         </CardContent>
       </Card>
@@ -73,18 +73,18 @@ export function UsageOverview() {
   const eventPercent = Math.min(100, (eventUsed / Math.max(1, eventLimit)) * 100);
 
   const getProgressColor = (percent: number) => {
-    if (percent >= 90) return "bg-red-500";
+    if (percent >= 90) return "bg-destructive";
     return "bg-primary";
   };
 
   return (
-    <Card className="relative hover:border-primary/50 transition-colors duration-200">
-      <CardHeader className="border-b border-border bg-muted/10 pb-4 flex flex-row items-center justify-between space-y-0">
+    <Card className="relative rounded-none border-sharp bg-black hover:border-primary/50 transition-colors duration-200">
+      <CardHeader className="border-b border-border bg-muted/5 pb-4 flex flex-row items-center justify-between space-y-0">
         <div className="flex flex-col">
-          <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">{"// resource validation"}</span>
-          <span className="font-heading text-base font-semibold tracking-tight text-foreground block">Usage Overview</span>
+          <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase block">{"// resource validation"}</span>
+          <span className="font-heading text-sm font-bold tracking-wider text-white uppercase block mt-1">Usage Overview</span>
         </div>
-        <div className="border border-primary/20 bg-primary/5 px-2 py-0.5 font-mono text-[9px] text-primary uppercase">
+        <div className="border border-primary/30 bg-primary/10 px-2 py-0.5 font-mono text-[9px] text-primary uppercase tracking-widest">
           {usage.plan}_PLAN
         </div>
       </CardHeader>
@@ -93,12 +93,12 @@ export function UsageOverview() {
         <div className="space-y-2">
           <div className="flex items-center justify-between font-mono text-xs">
             <span className="uppercase text-muted-foreground">Websites</span>
-            <span className="text-foreground">
+            <span className="text-white">
               {usage.websites.used.toLocaleString()} /{" "}
               {usage.websites.limit.toLocaleString()}
             </span>
           </div>
-          <div className="h-1.5 w-full bg-muted border border-border rounded-none overflow-hidden">
+          <div className="h-1.5 w-full bg-muted/10 border border-border rounded-none overflow-hidden">
             <div
               className={`h-full ${getProgressColor(websitePercent)} transition-all`}
               style={{ width: `${websitePercent}%` }}
@@ -110,12 +110,12 @@ export function UsageOverview() {
         <div className="space-y-2">
           <div className="flex items-center justify-between font-mono text-xs">
             <span className="uppercase text-muted-foreground">Monthly Events</span>
-            <span className="text-foreground">
+            <span className="text-white">
               {usage.events.used.toLocaleString()} /{" "}
               {usage.events.limit.toLocaleString()}
             </span>
           </div>
-          <div className="h-1.5 w-full bg-muted border border-border rounded-none overflow-hidden">
+          <div className="h-1.5 w-full bg-muted/10 border border-border rounded-none overflow-hidden">
             <div
               className={`h-full ${getProgressColor(eventPercent)} transition-all`}
               style={{ width: `${eventPercent}%` }}
@@ -126,8 +126,8 @@ export function UsageOverview() {
         {/* Upgrade CTA if close to limits */}
         {usage.plan === "free" && (eventPercent >= 70 || websitePercent >= 100) && (
           <div className="pt-2">
-            <div className="border border-border bg-muted/10 p-4 rounded-none">
-              <h4 className="mb-1 font-mono text-xs uppercase text-foreground font-bold">Approaching Limits</h4>
+            <div className="border border-destructive/30 bg-destructive/5 p-4 rounded-none">
+              <h4 className="mb-2 font-mono text-xs uppercase text-destructive font-bold tracking-wider">Approaching Limits</h4>
               <p className="mb-4 font-mono text-[10px] text-muted-foreground uppercase leading-relaxed">
                 {"// Upgrade to pro to activate unlimited nodes and metrics."}
               </p>

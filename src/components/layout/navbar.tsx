@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Menu, LogOut, BarChart3 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Sidebar } from "./sidebar";
-import { ThemeToggle } from "@/components/shared/theme-toggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -46,8 +45,6 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-2 md:gap-4">
-          <ThemeToggle />
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-8 w-8 rounded-none border border-border bg-muted/20">

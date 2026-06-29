@@ -8,22 +8,24 @@ import { PricingSection } from "@/features/marketing/components/pricing-section"
 import { FaqSection } from "@/features/marketing/components/faq-section";
 import { CtaSection } from "@/features/marketing/components/cta-section";
 import { Footer } from "@/features/marketing/components/footer";
-
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <Navbar />
-      <main className="flex-1">
-        <HeroSection />
-        <SocialProofSection />
-        <FeaturesSection />
-        <HowItWorksSection />
-        <DeveloperExperienceSection />
-        <PricingSection />
-        <FaqSection />
-        <CtaSection />
-      </main>
-      <Footer />
+    <div className="flex min-h-screen flex-col relative overflow-hidden bg-black text-white">
+
+      <div className="relative z-10 flex flex-col min-h-screen bg-transparent">
+        <Navbar />
+        <main className="flex-1 bg-transparent">
+          <HeroSection />
+          <SocialProofSection />
+          <FeaturesSection />
+          <HowItWorksSection />
+          <DeveloperExperienceSection />
+          <PricingSection />
+          <FaqSection />
+          <CtaSection />
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 }

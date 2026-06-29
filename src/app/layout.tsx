@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Sora, Geist, JetBrains_Mono } from "next/font/google";
+import { Playfair_Display, Source_Serif_4, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/shared/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
@@ -7,13 +7,13 @@ import { Providers } from "@/components/shared/providers";
 import { Footer } from "@/components/layout/footer";
 import Script from "next/script";
 
-const sora = Sora({
-  variable: "--font-sora",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
 });
 
-const geist = Geist({
-  variable: "--font-geist",
+const sourceSerif = Source_Serif_4({
+  variable: "--font-source-serif",
   subsets: ["latin"],
 });
 
@@ -77,7 +77,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${sora.variable} ${geist.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${playfair.variable} ${sourceSerif.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         {process.env.NEXT_PUBLIC_PULSESTAT_SITE_ID && (

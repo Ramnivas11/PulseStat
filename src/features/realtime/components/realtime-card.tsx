@@ -101,37 +101,37 @@ export function RealtimeCard({
   }, [websiteId]);
 
   return (
-    <Card className="relative hover:border-primary/50 transition-colors duration-200">
+    <Card className="relative rounded-none border-sharp bg-black hover:border-primary/50 transition-colors duration-200">
       {/* Corner indicators for telemetry look */}
       <div className="absolute top-0 left-0 w-[1px] h-[1px] bg-primary" />
       <div className="absolute top-0 right-0 w-[1px] h-[1px] bg-primary" />
       <div className="absolute bottom-0 left-0 w-[1px] h-[1px] bg-primary" />
       <div className="absolute bottom-0 right-0 w-[1px] h-[1px] bg-primary" />
 
-      <CardHeader className="pb-1">
+      <CardHeader className="pb-1 border-b border-border bg-muted/5 mb-4">
         <div className="flex items-start justify-between gap-3">
           <div className="space-y-1">
-            <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase block">
+            <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase block">
               {"// Active Visitors"}
             </span>
-            <span className="font-mono text-[9px] text-muted-foreground/40 uppercase block">
+            <span className="font-mono text-[9px] text-muted-foreground/60 uppercase block">
               window: {windowSeconds}s
             </span>
           </div>
 
-          <div className="flex h-7 w-7 items-center justify-center border border-primary/20 bg-primary/5 text-primary">
+          <div className="flex h-7 w-7 items-center justify-center border border-primary/30 bg-primary/10 text-primary">
             <Activity className="h-4 w-4" aria-hidden="true" />
           </div>
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-4 pb-4">
+      <CardContent className="space-y-4 pb-4 pt-0">
         <div className="flex items-end justify-between gap-4">
-          <p className="text-3xl font-mono font-bold tracking-tight text-foreground">
+          <p className="text-3xl font-mono font-bold tracking-tight text-white">
             {isLoading ? "--" : activeVisitors.toLocaleString()}
           </p>
 
-          <div className="mb-1.5 flex items-center gap-2 font-mono text-[9px] text-emerald-400 bg-emerald-500/5 border border-emerald-500/20 px-2 py-0.5 uppercase tracking-wider">
+          <div className="mb-1.5 flex items-center gap-2 font-mono text-[9px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 uppercase tracking-wider">
             <span
               className="relative flex h-1.5 w-1.5"
               aria-hidden="true"
@@ -143,7 +143,7 @@ export function RealtimeCard({
           </div>
         </div>
 
-        <div className="min-h-4 font-mono text-[9px] text-muted-foreground/40 uppercase tracking-wide">
+        <div className="min-h-4 font-mono text-[9px] text-muted-foreground/60 uppercase tracking-widest">
           {error
             ? `// ERR: ${error}`
             : isRefreshing

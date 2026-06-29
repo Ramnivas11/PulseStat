@@ -1,5 +1,15 @@
-<!-- BEGIN:nextjs-agent-rules -->
-# This is NOT the Next.js you know
+# Frontend Reconstruction Rules
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
-<!-- END:nextjs-agent-rules -->
+* Preserve all backend functionality.
+* Never modify API contracts without explicit approval.
+* Never modify authentication logic.
+* Never rename or replace src/proxy.ts.
+* Use shadcn/ui as the primary component system.
+* Customize shadcn components heavily; avoid default styling.
+* Use Framer Motion for application interactions.
+* Use GSAP + ScrollTrigger only for public marketing pages.
+* Build mobile-first responsive layouts.
+* Use strict TypeScript.
+* Prefer reusable shared components.
+* Ask for approval before high-risk refactors.
+* Work incrementally and verify functionality after every major change.

@@ -78,20 +78,20 @@ export function CreateWebsiteForm() {
   }
 
   return (
-    <Card className="border-dashed">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-lg">
+    <Card className="rounded-none border border-dashed border-border bg-black hover:border-primary/50 transition-colors">
+      <CardHeader className="border-b border-border bg-muted/5 pb-4">
+        <CardTitle className="flex items-center gap-2 text-sm font-heading font-black uppercase tracking-wider text-white">
           <Plus className="h-4 w-4 text-primary" aria-hidden="true" />
           Create Website
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pt-6">
         <form
-          className="grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] md:items-end"
+          className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] md:items-start"
           onSubmit={handleCreateWebsite}
         >
           <div className="space-y-2">
-            <Label htmlFor="website-name">Website name</Label>
+            <Label htmlFor="website-name" className="text-[10px] font-mono font-bold uppercase tracking-widest text-muted-foreground">Website name</Label>
             <Input
               id="website-name"
               placeholder="Marketing site"
@@ -99,11 +99,12 @@ export function CreateWebsiteForm() {
               onChange={(e) => setName(e.target.value)}
               disabled={isSubmitting}
               autoComplete="off"
+              className="h-12 rounded-none border-border bg-transparent focus-visible:ring-1 focus-visible:ring-primary font-mono text-xs text-white"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="website-domain">Domain</Label>
+            <Label htmlFor="website-domain" className="text-[10px] font-mono font-bold uppercase tracking-widest text-muted-foreground">Domain</Label>
             <Input
               id="website-domain"
               placeholder="example.com"
@@ -113,26 +114,27 @@ export function CreateWebsiteForm() {
               autoCapitalize="none"
               autoComplete="url"
               spellCheck={false}
+              className="h-12 rounded-none border-border bg-transparent focus-visible:ring-1 focus-visible:ring-primary font-mono text-xs text-white"
             />
-            <p className="text-xs text-muted-foreground">
-              Protocols and paths are stripped automatically.
+            <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider mt-2">
+              {"// Protocols and paths are stripped automatically"}
             </p>
           </div>
 
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full md:w-auto"
+            className="w-full md:w-auto h-12 rounded-none font-mono text-xs uppercase tracking-wider bg-primary hover:bg-primary/90 text-primary-foreground md:mt-[26px]"
           >
             {isSubmitting ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Creating
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                CREATING
               </>
             ) : (
               <>
-                <Plus className="h-4 w-4" />
-                Create
+                <Plus className="mr-2 h-4 w-4" />
+                CREATE
               </>
             )}
           </Button>
