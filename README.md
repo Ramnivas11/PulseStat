@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PulseStat
+
+A real-time, privacy-focused web analytics platform built for modern applications.
+
+## Tech Stack
+*   **Framework**: Next.js 16.2.6 (App Router + Turbopack)
+*   **Runtime**: React 19.2.4
+*   **Styling**: Tailwind CSS v4
+*   **Database & ORM**: PostgreSQL + Prisma v7.8.0
+*   **Authentication**: NextAuth.js v5 (Beta)
+*   **Caching & Rate Limiting**: Upstash Redis
+*   **Visualization**: Recharts
+*   **Animation**: GSAP + Framer Motion
+*   **Tracker SDK**: Custom tracking script bundled with `tsup`
 
 ## Getting Started
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### 1. Environment Configuration
+Create a `.env` file in the root directory:
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/pulsestat"
+NEXTAUTH_SECRET="your-nextauth-secret"
+UPSTASH_REDIS_REST_URL="https://your-redis-instance.upstash.io"
+UPSTASH_REDIS_REST_TOKEN="your-upstash-token"
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install Dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Database Setup & Seed
+Generate Prisma client and apply migrations:
+```bash
+npx prisma db push
+npm run postinstall
+npx prisma db seed
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Running the Development Server
+Build the tracker SDK and start the Next.js dev server:
+```bash
+npm run dev
+```
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Available Scripts
+*   `npm run dev` - Starts dev server.
+*   `npm run build` - Bundles the tracker script and builds the production Next.js application.
+*   `npm run build:tracker` - Bundles the custom tracker SDK script (`src/tracker/tracker.ts`) using `tsup`.
+*   `npm run test` - Runs test suite using native `tsx` runner.
+*   `npm run smoke` - Runs the smoke test suite.

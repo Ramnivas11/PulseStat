@@ -34,14 +34,16 @@ yarn-error.log*
 .env*
 
 # agents
-.agents/brain/
-.agents/memory/
+.agents/
 .vscode/
 .agent/
 .github/
 .design-system/
+design-system/
 /tests/
 /docs/
+/*.md
+!/README.md
 
 
 # vercel
